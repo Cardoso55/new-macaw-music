@@ -5,3 +5,15 @@
 // Artistas
 // Álbuns
 // Pode ter tabs ou filtros por tipo de resultado
+
+import MusicCard from "../components/MusicCard";
+
+function Search() {
+    return (
+        <div>
+            <MusicCard/>
+        </div>
+    )
+}
+
+export default Search;
