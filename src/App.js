@@ -74,6 +74,7 @@ function App() {
         <Route path="/playlist/:id" element={<PlaylistView />} />
         <Route path="/history" element={<History />} />
         <Route path="/login" element={<Login />} /> 
+        <Route path="/register" element={<Register/>} />
       </Routes>
       <MusicCard resultados={resultados} tocarPreview={tocarPreview} buscarLetra={buscarLetra} />
       <Main resultados={resultados}/>

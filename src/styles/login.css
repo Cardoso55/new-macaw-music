@@ -1,0 +1,128 @@
+body{
+    font-family: var(--font-diferente);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.login-container {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+  margin-top: 70px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #ffffff;
+}
+
+.login-container .conteudo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    padding: 20px;
+    background-color: #181818;
+    border-radius: 10px;
+}
+
+.login-container form {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-container .form-group {
+    width: 80%;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.login-container img{
+    width: 150px;
+    height: auto;
+    margin: 30px 0 50px 0;
+    vertical-align: middle;
+}
+
+.login-container .form-group label {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #ffffff;
+}
+
+.login-container .form-group input {
+    width: 100%;
+    padding: 15px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #282828;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.login-container .form-group input::placeholder {
+    color: #b3b3b3;
+    padding: 10px;
+}
+
+.login-container .form-group input:focus {
+    outline: none;
+    border: 2px solid #b3b3b3;
+}
+
+.login-container button {
+    margin: 15px 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;;
+    width: 100%;
+    background-color: #b3b3b3;
+    color: #121212;
+    border: none;
+    padding: 15px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 400;
+}
+
+.login-container button:hover {
+    background-color: #a0a0a0;
+    transform: scale(1.05); 
+}
+
+.link-cadastro {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.botao-tem-login {
+  color: #2168ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.botao-tem-login:visited {
+  color: #2168ff;
+}
+
+.botao-tem-login:hover {
+  text-decoration: underline;
+}
