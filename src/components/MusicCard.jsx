@@ -2,12 +2,13 @@
 // usado nos carroséis, paginas de pesquisa ou destaques
 // Exibe capa, título, artista e botões de ação
 import './Searchbar';
+import '../styles/musiccard.css';
 
-function MusicCard({resultados , tocarPreview , buscarLetra}) {
+function MusicCard({resultados = [] , tocarPreview , buscarLetra}) {
 
     return(
         <div className="grid-container">
-                {resultados.map((track, i) => (
+            {resultados.map((track, i) => (
                 <div className="music-card" key={i}>
                     <div className="card-img">
                         <img className="music-img" src={track.album.cover_big} alt={track.title} />

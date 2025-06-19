@@ -18,39 +18,42 @@ import Register from './pages/Register';
 function App() {
   const [query, setQuery] = useState('');
   const [resultados, setResultados] = useState([]);
+  
   const audioRef = useRef(null);
 
   const buscarMusica = (q) => {
-  if (!q) {
-    setResultados([]);
-    return;
-  }
-
-  const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
-  const script = document.createElement('script'); // <-- CRIAR AQUI PRIMEIRO
-
-  window[callback] = (data) => {
-    delete window[callback];
-    if (document.body.contains(script)) {
-      document.body.removeChild(script); // <-- EVITA ERRO
+    if (!q) {
+      setResultados([]);
+      return;
     }
-    setResultados(data.data || []);
-  };
 
-  script.src = `https://api.deezer.com/search/track?q=${encodeURIComponent(q)}&output=jsonp&callback=${callback}`;
-  script.onerror = () => console.error('Erro ao carregar JSONP');
-  document.body.appendChild(script);
+    const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
+    const script = document.createElement('script'); // <-- CRIAR AQUI PRIMEIRO
+
+    window[callback] = (data) => {
+      delete window[callback];
+      if (document.body.contains(script)) {
+        document.body.removeChild(script); // <-- EVITA ERRO
+      }
+      setResultados(Array.isArray(data.data) ? data.data : []);
+    };
+
+    script.src = `https://api.deezer.com/search/track?q=${encodeURIComponent(q)}&output=jsonp&callback=${callback}`;
+    script.onerror = () => console.error('Erro ao carregar JSONP');
+    document.body.appendChild(script);
 };
 
   
   const tocarPreview = (url) => {
         console.log('Tocando preview:', url);
-        const player = audioRef.current;
-        if (player.src === url) {
-            if (player.paused) player.play();
-        } else {
-            player.src = url;
-            player.play();
+        if(audioRef.current){
+          const player = audioRef.current;
+          if (player.src === url) {
+              if (player.paused) player.play();
+          } else {
+              player.src = url;
+              player.play();
+          }
         }
     };
   
@@ -68,11 +71,14 @@ function App() {
 
   return (
     <div>
-      <Sidebar/>
-      <Header query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
         <Routes>
-          <Route path='/' element={<Home />}/>
-          <Route path="/search" element={<Search />} />
+          <Route path='/' element={
+            <>
+              <Sidebar/> 
+              <Header query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
+              <Main resultados={resultados} tocarPreview={tocarPreview}  buscarLetra={buscarLetra}/> 
+            </>
+          }/>
           <Route path="/artist/:id" element={<Artist />} />
           <Route path="/album/:id" element={<Album />} />
           <Route path="/playlists" element={<Playlists />} />
@@ -81,8 +87,7 @@ function App() {
           <Route path="/login" element={<Login />} /> 
           <Route path="/register" element={<Register/>} />
         </Routes>
-      <MusicCard resultados={resultados} tocarPreview={tocarPreview} buscarLetra={buscarLetra} />
-      <Main resultados={resultados}/>
+        <audio ref={audioRef} />
     </div>
   );
 
