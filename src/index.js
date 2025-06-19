@@ -11,6 +11,7 @@ import PlaylistView from './pages/PlaylistsView';
 import History from './pages/History';
 import Login from './pages/Login';
 import Sidebar from './components/Sidebar';
+import Register from './pages/Register.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -25,6 +26,7 @@ root.render(
         <Route path="/playlist/:id" element={<PlaylistView />} />
         <Route path="/history" element={<History />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         
       </Routes>
     </BrowserRouter>

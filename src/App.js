@@ -1,9 +1,7 @@
+import Login from './pages/Login'; 
+import { useState, useEffect } from 'react';
 function App() {
-  return (
-    <div className="App">
-      <h1>Macaw Music</h1>
-    </div>
-  );
+   
 }
 
 export default App;
