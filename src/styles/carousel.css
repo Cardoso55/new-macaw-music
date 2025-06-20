@@ -20,7 +20,7 @@
   width: 100%;
   aspect-ratio: 1 / 1; /* quadrado perfeito */
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 12px; 
 }
 
 .card-img img {

@@ -4,7 +4,7 @@
 
 import React from 'react';
 import '../styles/playlistsview.css'; // cria um novo CSS ou aproveita o existente
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 function PlaylistView() {
   const { id } = useParams();
