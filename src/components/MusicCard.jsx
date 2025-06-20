@@ -1,7 +1,6 @@
 // Cartão de música
 // usado nos carroséis, paginas de pesquisa ou destaques
 // Exibe capa, título, artista e botões de ação
-import './Searchbar';
 import '../styles/musiccard.css';
 
 function MusicCard({resultados = [] , tocarPreview , buscarLetra}) {
@@ -14,7 +13,7 @@ function MusicCard({resultados = [] , tocarPreview , buscarLetra}) {
                         <img className="music-img" src={track.album.cover_big} alt={track.title} />
                         <div className="play">
                             <button onClick={() => tocarPreview(track.preview)}>
-                                <span className="fa fa-solid fa-play"></span>
+                                <span className="fas fa-play"></span>
                             </button>
                         </div>
                     </div>

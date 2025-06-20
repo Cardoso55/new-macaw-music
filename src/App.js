@@ -1,4 +1,4 @@
-import { useState , useRef} from 'react';
+import { useState , useRef, useEffect} from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router';
 import Searchbar from './components/Searchbar';
 import MusicCard from './components/MusicCard';
@@ -19,30 +19,73 @@ import CriarPlaylist from './pages/CriarPlaylist';
 function App() {
   const [query, setQuery] = useState('');
   const [resultados, setResultados] = useState([]);
-  
+  const generos = ['rock', 'pop', 'funk', 'jazz', 'electro', 'sertanejo', 'trap', 'reggae', 'bossa nova'];
+  const [aleatorias, setAleatorias] = useState([]);
+  const [musicasPorGenero, setMusicasPorGenero] = useState({});
   const audioRef = useRef(null);
 
+  useEffect(() => {
+    buscarAleatorias();
+    buscarGeneros();
+  }, []);
+
   const buscarMusica = (q) => {
-  if (!q) {
-    setResultados([]);
-    return;
-  }
-
-  const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
-  const script = document.createElement('script'); // <-- CRIAR AQUI PRIMEIRO
-
-  window[callback] = (data) => {
-    delete window[callback];
-    if (document.body.contains(script)) {
-      document.body.removeChild(script); // <-- EVITA ERRO
+    if (!q) {
+      setResultados([]);
+      return;
     }
-    setResultados(data.data || []);
+
+    const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
+    const script = document.createElement('script'); // <-- CRIAR AQUI PRIMEIRO
+
+    window[callback] = (data) => {
+      delete window[callback];
+      if (document.body.contains(script)) {
+        document.body.removeChild(script); // <-- EVITA ERRO
+      }
+      setResultados(Array.isArray(data.data) ? data.data : []);
+    };
+
+    script.src = `https://api.deezer.com/search/track?q=${encodeURIComponent(q)}&output=jsonp&callback=${callback}`;
+    script.onerror = () => console.error('Erro ao carregar JSONP');
+    document.body.appendChild(script);
   };
 
-  script.src = `https://api.deezer.com/search/track?q=${encodeURIComponent(q)}&output=jsonp&callback=${callback}`;
-  script.onerror = () => console.error('Erro ao carregar JSONP');
-  document.body.appendChild(script);
-};
+  const buscarAleatorias = () => {
+    const generoAleatorio = generos[Math.floor(Math.random() * generos.length)];
+
+    const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
+    const script = document.createElement('script');
+
+    window[callback] = (data) => {
+      delete window[callback];
+      document.body.removeChild(script);
+      setAleatorias(Array.isArray(data.data) ? data.data : []);
+    };
+
+    script.src = `https://api.deezer.com/search?q=${encodeURIComponent(generoAleatorio)}&output=jsonp&callback=${callback}`;
+    document.body.appendChild(script);
+  };
+
+  const buscarGeneros = () => {
+    generos.forEach((genero) => {
+      const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
+      const script = document.createElement('script');
+
+      window[callback] = (data) => {
+        delete window[callback];
+        document.body.removeChild(script);
+        setMusicasPorGenero(prev => ({
+          ...prev,
+          [genero]: Array.isArray(data.data) ? data.data : []
+        }));
+      };
+
+      script.src = `https://api.deezer.com/search?q=${encodeURIComponent(genero)}&output=jsonp&callback=${callback}`;
+      document.body.appendChild(script);
+  });
+  }
+
 
   
   const tocarPreview = (url) => {
@@ -64,7 +107,7 @@ function App() {
         const data = await res.json();
         const path = data.response?.hits[0]?.result?.path;
         if (path) window.open(`https://genius.com${path}`, '_blank');
-        else alert('Letra nÃ£o encontrada.');
+        else alert('Letra não encontrada.');
         } catch (e) {
         console.error('Erro ao buscar letra:', e);
         }
@@ -72,11 +115,14 @@ function App() {
 
   return (
     <div>
-      <Sidebar/>
-      <Header query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
         <Routes>
-          <Route path='/' element={<Home />}/>
-          <Route path="/search" element={<Search />} />
+          <Route path='/' element={
+            <>
+              <Sidebar/> 
+              <Header query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
+              <Main resultados={resultados} aleatorias={aleatorias} musicasPorGenero={musicasPorGenero} tocarPreview={tocarPreview}  buscarLetra={buscarLetra}/> 
+            </>
+          }/>
           <Route path="/artist/:id" element={<Artist />} />
           <Route path="/album/:id" element={<Album />} />
           <Route path="/playlists" element={<Playlists />} />
@@ -86,8 +132,7 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/criar-playlist" element={<CriarPlaylist/>} />
         </Routes>
-      <MusicCard resultados={resultados} tocarPreview={tocarPreview} buscarLetra={buscarLetra} />
-      <Main resultados={resultados}/>
+        <audio ref={audioRef} />
     </div>
   );
 
