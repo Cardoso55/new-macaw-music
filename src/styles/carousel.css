@@ -1,5 +1,5 @@
 .carousel-container {
-  padding: 1.2rem;
+  padding: 1rem;
 }
 
 .carousel-item {
@@ -68,4 +68,38 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.carousel-container .swiper-button-next,
+.carousel-container .swiper-button-prev {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 18px;
+  top: 55%;
+  transform: translateY(-50%);
+  transition: background-color 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.carousel-container:hover .swiper-button-next,
+.carousel-container:hover .swiper-button-prev {
+  opacity: 1;
+  pointer-events: auto;
+}
+ 
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 20px;
 }
