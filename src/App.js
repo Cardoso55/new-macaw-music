@@ -8,12 +8,13 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import Artist from './pages/Artist';
 import Album from './pages/Album';
-import Playlists from './pages/Playlist';
-import PlaylistView from './pages/PlaylistsView';
+import Playlists from './pages/Playlists';
+import PlaylistView from './pages/PlaylistView';
 import History from './pages/History';
 import Login from './pages/Login'
 import Sidebar from './components/Sidebar';
 import Register from './pages/Register';
+import CriarPlaylist from './pages/CriarPlaylist';
 
 function App() {
   const [query, setQuery] = useState('');
@@ -83,6 +84,7 @@ function App() {
           <Route path="/history" element={<History />} />
           <Route path="/login" element={<Login />} /> 
           <Route path="/register" element={<Register/>} />
+          <Route path="/criar-playlist" element={<CriarPlaylist/>} />
         </Routes>
       <MusicCard resultados={resultados} tocarPreview={tocarPreview} buscarLetra={buscarLetra} />
       <Main resultados={resultados}/>

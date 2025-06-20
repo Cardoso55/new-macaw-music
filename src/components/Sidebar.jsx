@@ -42,12 +42,18 @@ function Sidebar() {
                         <span className="fa fas fa-book"></span>
                         <span className="text">Sua Biblioteca</span>
                     </button>
-                    <span className="fa fa-plus"></span>
+                   <button onClick={() => navigate('/criar-playlist')}>
+  <span className="fa fa-plus"></span>
+</button>
+
                 </div>
                 <div className="content__library">
                     <span className="title">Crie sua primeira playlist</span>
                     <span className="subtitle">É fácil, vamos te ajudar!</span>
-                    <button className="btn"><span className="text__btn">Criar playlist</span></button>
+                    <button className="btn" onClick={() => navigate('/criar-playlist')}>
+  <span className="text__btn">Criar playlist</span>
+</button>
+
                 </div>
                 <div className="content__library">
                     <span className="title">Que tal seguir um podcast novo?</span>
