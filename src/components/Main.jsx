@@ -18,7 +18,7 @@ import imagem15 from '../assets/images/15.jpeg';
 import Search from '../pages/Search';
 import '../styles/main.css';
 
-function Main ({ resultados = [] }) {
+function Main ({ resultados = [] , tocarPreview , buscarLetra}) {
     return (
         <div className="conteiner">
             <div className="playlist-container">
@@ -140,7 +140,7 @@ function Main ({ resultados = [] }) {
                     </div>
                 </>
                 ) : (
-                    <Search/>
+                    <Search resultados={resultados || []} tocarPreview={tocarPreview} buscarLetra={buscarLetra}/>
                 )}
             </div>
         </div>

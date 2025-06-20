@@ -18,6 +18,7 @@ import Register from './pages/Register';
 function App() {
   const [query, setQuery] = useState('');
   const [resultados, setResultados] = useState([]);
+  
   const audioRef = useRef(null);
 
   const buscarMusica = (q) => {
@@ -45,12 +46,14 @@ function App() {
   
   const tocarPreview = (url) => {
         console.log('Tocando preview:', url);
-        const player = audioRef.current;
-        if (player.src === url) {
-            if (player.paused) player.play();
-        } else {
-            player.src = url;
-            player.play();
+        if(audioRef.current){
+          const player = audioRef.current;
+          if (player.src === url) {
+              if (player.paused) player.play();
+          } else {
+              player.src = url;
+              player.play();
+          }
         }
     };
   
