@@ -8,7 +8,7 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import Artist from './pages/Artist';
 import Album from './pages/Album';
-import Playlists from './pages/Playslist';
+import Playlists from './pages/Playlist';
 import PlaylistView from './pages/PlaylistsView';
 import History from './pages/History';
 import Login from './pages/Login'
@@ -29,25 +29,20 @@ function App() {
   }, []);
 
   const buscarMusica = (q) => {
-    if (!q) {
-      setResultados([]);
-      return;
+  if (!q) {
+    setResultados([]);
+    return;
+  }
+
+  const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
+  const script = document.createElement('script'); // <-- CRIAR AQUI PRIMEIRO
+
+  window[callback] = (data) => {
+    delete window[callback];
+    if (document.body.contains(script)) {
+      document.body.removeChild(script); // <-- EVITA ERRO
     }
-
-    const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
-    const script = document.createElement('script'); // <-- CRIAR AQUI PRIMEIRO
-
-    window[callback] = (data) => {
-      delete window[callback];
-      if (document.body.contains(script)) {
-        document.body.removeChild(script); // <-- EVITA ERRO
-      }
-      setResultados(Array.isArray(data.data) ? data.data : []);
-    };
-
-    script.src = `https://api.deezer.com/search/track?q=${encodeURIComponent(q)}&output=jsonp&callback=${callback}`;
-    script.onerror = () => console.error('Erro ao carregar JSONP');
-    document.body.appendChild(script);
+    setResultados(data.data || []);
   };
 
   const buscarAleatorias = () => {
@@ -85,6 +80,10 @@ function App() {
   });
   }
 
+  script.src = `https://api.deezer.com/search/track?q=${encodeURIComponent(q)}&output=jsonp&callback=${callback}`;
+  script.onerror = () => console.error('Erro ao carregar JSONP');
+  document.body.appendChild(script);
+};
 
   
   const tocarPreview = (url) => {
@@ -106,7 +105,7 @@ function App() {
         const data = await res.json();
         const path = data.response?.hits[0]?.result?.path;
         if (path) window.open(`https://genius.com${path}`, '_blank');
-        else alert('Letra não encontrada.');
+        else alert('Letra nÃ£o encontrada.');
         } catch (e) {
         console.error('Erro ao buscar letra:', e);
         }
@@ -114,6 +113,8 @@ function App() {
 
   return (
     <div>
+      <Sidebar/>
+      <Header query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
         <Routes>
           <Route path='/' element={
             <>
@@ -130,7 +131,8 @@ function App() {
           <Route path="/login" element={<Login />} /> 
           <Route path="/register" element={<Register/>} />
         </Routes>
-        <audio ref={audioRef} />
+      <MusicCard resultados={resultados} tocarPreview={tocarPreview} buscarLetra={buscarLetra} />
+      <Main resultados={resultados}/>
     </div>
   );
 
