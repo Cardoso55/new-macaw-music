@@ -1,4 +1,4 @@
-import { useState , useRef} from 'react';
+import { useState , useRef, useEffect} from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router';
 import Searchbar from './components/Searchbar';
 import MusicCard from './components/MusicCard';
@@ -18,8 +18,15 @@ import Register from './pages/Register';
 function App() {
   const [query, setQuery] = useState('');
   const [resultados, setResultados] = useState([]);
-  
+  const generos = ['rock', 'pop', 'funk', 'jazz', 'electro', 'sertanejo', 'trap', 'reggae', 'bossa nova'];
+  const [aleatorias, setAleatorias] = useState([]);
+  const [musicasPorGenero, setMusicasPorGenero] = useState({});
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    buscarAleatorias();
+    buscarGeneros();
+  }, []);
 
   const buscarMusica = (q) => {
     if (!q) {
@@ -41,7 +48,43 @@ function App() {
     script.src = `https://api.deezer.com/search/track?q=${encodeURIComponent(q)}&output=jsonp&callback=${callback}`;
     script.onerror = () => console.error('Erro ao carregar JSONP');
     document.body.appendChild(script);
-};
+  };
+
+  const buscarAleatorias = () => {
+    const generoAleatorio = generos[Math.floor(Math.random() * generos.length)];
+
+    const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
+    const script = document.createElement('script');
+
+    window[callback] = (data) => {
+      delete window[callback];
+      document.body.removeChild(script);
+      setAleatorias(Array.isArray(data.data) ? data.data : []);
+    };
+
+    script.src = `https://api.deezer.com/search?q=${encodeURIComponent(generoAleatorio)}&output=jsonp&callback=${callback}`;
+    document.body.appendChild(script);
+  };
+
+  const buscarGeneros = () => {
+    generos.forEach((genero) => {
+      const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
+      const script = document.createElement('script');
+
+      window[callback] = (data) => {
+        delete window[callback];
+        document.body.removeChild(script);
+        setMusicasPorGenero(prev => ({
+          ...prev,
+          [genero]: Array.isArray(data.data) ? data.data : []
+        }));
+      };
+
+      script.src = `https://api.deezer.com/search?q=${encodeURIComponent(genero)}&output=jsonp&callback=${callback}`;
+      document.body.appendChild(script);
+  });
+  }
+
 
   
   const tocarPreview = (url) => {
@@ -76,7 +119,7 @@ function App() {
             <>
               <Sidebar/> 
               <Header query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
-              <Main resultados={resultados} tocarPreview={tocarPreview}  buscarLetra={buscarLetra}/> 
+              <Main resultados={resultados} aleatorias={aleatorias} musicasPorGenero={musicasPorGenero} tocarPreview={tocarPreview}  buscarLetra={buscarLetra}/> 
             </>
           }/>
           <Route path="/artist/:id" element={<Artist />} />
