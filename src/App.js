@@ -149,6 +149,11 @@ function App() {
 
   
   const tocarPreview = (url, index, novaPlaylist) => {
+         if (!url) {
+          alert('Essa música não tem preview disponível.');
+        return;
+        }
+
         console.log('Tocando preview:', url);
         if(audioRef.current){
           const player = audioRef.current;
