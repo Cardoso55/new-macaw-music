@@ -1,0 +1,54 @@
+.player-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #181818;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+.player-cover {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  margin-right: 16px;
+}
+
+.player-info {
+  flex-grow: 1;
+}
+
+.player-info h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.player-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #a7a7a7;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.player-controls button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.player-controls button:hover {
+  transform: scale(1.2);
+}

@@ -14,11 +14,27 @@ import History from './pages/History';
 import Login from './pages/Login'
 import Sidebar from './components/Sidebar';
 import Register from './pages/Register';
+import Player from './components/Player';
 
 function App() {
   const [query, setQuery] = useState('');
   const [resultados, setResultados] = useState([]);
-  const generos = ['rock', 'pop', 'funk', 'jazz', 'electro', 'sertanejo', 'trap', 'reggae', 'bossa nova'];
+  const [playlist, setPlaylist] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const generosComIds = [
+    { nome: 'Rock', id: 152 },
+    { nome: 'Pop', id: 132 },
+    { nome: 'Jazz', id: 129 },
+    { nome: 'Electro', id: 106 },
+    { nome: 'Reggae', id: 144 },
+    { nome: 'Funk', id: 472 }, 
+    { nome: 'Sertanejo', id: 80 },
+    { nome: 'Trap', id: 465 },  
+    { nome: 'MPB', id: 78 }, 
+    { nome: 'Samba e Pagóde', id: 79},
+    { nome: 'Metal', id: 464},
+  ];
   const [aleatorias, setAleatorias] = useState([]);
   const [musicasPorGenero, setMusicasPorGenero] = useState({});
   const audioRef = useRef(null);
@@ -31,11 +47,12 @@ function App() {
   const buscarMusica = (q) => {
     if (!q) {
       setResultados([]);
+      setPlaylist([]);
       return;
     }
 
     const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
-    const script = document.createElement('script'); // <-- CRIAR AQUI PRIMEIRO
+    const script = document.createElement('script');
 
     window[callback] = (data) => {
       delete window[callback];
@@ -51,43 +68,85 @@ function App() {
   };
 
   const buscarAleatorias = () => {
-    const generoAleatorio = generos[Math.floor(Math.random() * generos.length)];
+  const generoAleatorio = generosComIds[Math.floor(Math.random() * generosComIds.length)];
 
+  const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
+  const script = document.createElement('script');
+
+  window[callback] = (data) => {
+    const artistas = data.data || [];
+
+    // Pega os top 1 ou 2 artistas só pra evitar excesso de requisição
+    artistas.slice(0, 2).forEach((artista) => {
+      const callbackArtista = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
+      const scriptArtista = document.createElement('script');
+
+      window[callbackArtista] = (dataMusicas) => {
+        const musicas = dataMusicas.data || [];
+        setAleatorias((prev) => [...prev, ...musicas]);
+        delete window[callbackArtista];
+        document.body.removeChild(scriptArtista);
+      };
+
+      scriptArtista.src = `https://api.deezer.com/artist/${artista.id}/top?limit=3&output=jsonp&callback=${callbackArtista}`;
+      document.body.appendChild(scriptArtista);
+    });
+
+    delete window[callback];
+    document.body.removeChild(script);
+  };
+
+  script.src = `https://api.deezer.com/genre/${generoAleatorio.id}/artists?output=jsonp&callback=${callback}`;
+  document.body.appendChild(script);
+};
+
+  const buscarGeneros = () => {
+    generosComIds.forEach(({ nome, id }) => {
+      buscarMusicasPorGenero(id, nome);
+    });
+  };
+
+  const buscarMusicasPorGenero = (genreId, generoNome) => {
     const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
     const script = document.createElement('script');
 
     window[callback] = (data) => {
+      const artistas = data.data || [];
+
+      // Pega os top 2 artistas para não fazer muitas requisições
+      artistas.slice(0, 3).forEach((artista) => {
+        const callbackArtista = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
+        const scriptArtista = document.createElement('script');
+
+        window[callbackArtista] = (dataMusicas) => {
+          const musicas = dataMusicas.data || [];
+          setMusicasPorGenero(prev => {
+            const existingMusicas = prev[generoNome] || [];
+            const novasSemRepetir = musicas.filter(m => !existingMusicas.some(em => em.id === m.id));
+            return {
+              ...prev,
+              [generoNome]: [...existingMusicas, ...novasSemRepetir]
+            }
+          });
+          delete window[callbackArtista];
+          document.body.removeChild(scriptArtista);
+        };
+
+        scriptArtista.src = `https://api.deezer.com/artist/${artista.id}/top?limit=6&output=jsonp&callback=${callbackArtista}`;
+        document.body.appendChild(scriptArtista);
+      });
+
       delete window[callback];
       document.body.removeChild(script);
-      setAleatorias(Array.isArray(data.data) ? data.data : []);
     };
 
-    script.src = `https://api.deezer.com/search?q=${encodeURIComponent(generoAleatorio)}&output=jsonp&callback=${callback}`;
+    script.src = `https://api.deezer.com/genre/${genreId}/artists?output=jsonp&callback=${callback}`;
     document.body.appendChild(script);
   };
 
-  const buscarGeneros = () => {
-    generos.forEach((genero) => {
-      const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
-      const script = document.createElement('script');
-
-      window[callback] = (data) => {
-        delete window[callback];
-        document.body.removeChild(script);
-        setMusicasPorGenero(prev => ({
-          ...prev,
-          [genero]: Array.isArray(data.data) ? data.data : []
-        }));
-      };
-
-      script.src = `https://api.deezer.com/search?q=${encodeURIComponent(genero)}&output=jsonp&callback=${callback}`;
-      document.body.appendChild(script);
-  });
-  }
-
 
   
-  const tocarPreview = (url) => {
+  const tocarPreview = (url, index, novaPlaylist) => {
         console.log('Tocando preview:', url);
         if(audioRef.current){
           const player = audioRef.current;
@@ -98,6 +157,9 @@ function App() {
               player.play();
           }
         }
+        setPlaylist(novaPlaylist);
+        setCurrentIndex(index);
+        setIsPlaying(true);
     };
   
   const buscarLetra = async (artista, musica) => {
@@ -119,7 +181,23 @@ function App() {
             <>
               <Sidebar/> 
               <Header query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
-              <Main resultados={resultados} aleatorias={aleatorias} musicasPorGenero={musicasPorGenero} tocarPreview={tocarPreview}  buscarLetra={buscarLetra}/> 
+              <Main 
+                resultados={resultados} 
+                aleatorias={aleatorias} 
+                musicasPorGenero={musicasPorGenero} 
+                tocarPreview={tocarPreview}  
+                buscarLetra={buscarLetra}
+                setPlaylist={setPlaylist}
+                setCurrentIndex={setCurrentIndex}
+                setIsPlaying={setIsPlaying}
+              />
+              <Player 
+                playlist={playlist} 
+                currentIndex={currentIndex} 
+                setCurrentIndex={setCurrentIndex} 
+                isPlaying={isPlaying} 
+                setIsPlaying={setIsPlaying}
+              />
             </>
           }/>
           <Route path="/artist/:id" element={<Artist />} />
