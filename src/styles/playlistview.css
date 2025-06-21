@@ -94,7 +94,7 @@
 }
 
 .music-item button {
-  background-color: #1db954;
+  background-color: rgb(33, 104, 255);
   border: none;
   padding: 6px 12px;
   color: white;
@@ -104,6 +104,6 @@
 }
 
 .music-item button:hover {
-  background-color: #1ed760;
+  background-color: rgb(25, 74, 182);
 }
 

@@ -14,3 +14,7 @@ root.render(
   </React.StrictMode>
 );
 
+window.onerror = function (message, source, lineno, colno, error) {
+  console.error("Erro global capturado:", message, source, lineno, colno, error);
+};
+
