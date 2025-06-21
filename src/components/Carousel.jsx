@@ -8,7 +8,7 @@ import 'swiper/css/navigation';
 import { FreeMode, Pagination , Navigation } from 'swiper/modules';
 import '../styles/carousel.css';
 
-function Carousel( {resultados = [] , tocarPreview } ){
+function Carousel( {resultados = [] , tocarPreview , setPlaylist, setCurrentIndex, setIsPlaying } ){
     console.log(resultados)
     return (
         <div className="carousel-container">
@@ -27,7 +27,11 @@ function Carousel( {resultados = [] , tocarPreview } ){
                         <div className="card-img">
                             <img src={track.album.cover_medium} alt={track.title} style={{ width: '100%', borderRadius: '8px' }} />
                             <div className="play">
-                                <button onClick={() => tocarPreview(track.preview)}>
+                                <button onClick={() => {
+                                    setPlaylist(resultados);
+                                    setCurrentIndex(i);
+                                    setIsPlaying(true);
+                                }}>
                                     <span className="fas fa-play"></span>
                                 </button>
                             </div>

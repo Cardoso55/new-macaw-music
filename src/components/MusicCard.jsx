@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import './Searchbar';
 import '../styles/musiccard.css';
 
-function MusicCard({ resultados = [], tocarPreview, buscarLetra }) {
+
+function MusicCard({resultados = [] , tocarPreview , buscarLetra , setIsPlaying, setPlaylist, setCurrentIndex}) {
     const [mostrarDropdown, setMostrarDropdown] = useState(null); // controla o dropdown por música
     const [playlists, setPlaylists] = useState([]);
 
@@ -36,8 +37,12 @@ function MusicCard({ resultados = [], tocarPreview, buscarLetra }) {
                     <div className="card-img">
                         <img className="music-img" src={track.album.cover_big} alt={track.title} />
                         <div className="play">
-                            <button onClick={() => tocarPreview(track.preview)}>
-                                <span className="fa fa-solid fa-play"></span>
+                            <button onClick={() => {
+                                setPlaylist(resultados);
+                                setCurrentIndex(i);
+                                setIsPlaying(true);
+                            }}>
+                                <span className="fas fa-play"></span>
                             </button>
                         </div>
                     </div>

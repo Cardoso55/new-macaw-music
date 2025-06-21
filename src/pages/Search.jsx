@@ -8,10 +8,17 @@
 
 import MusicCard from "../components/MusicCard";
 
-function Search({resultados = [] , tocarPreview , buscarLetra}) {
+function Search({resultados = [] , tocarPreview , buscarLetra , setIsPlaying ,setCurrentIndex, setPlaylist}) {
     return (
         <div>
-            <MusicCard resultados={resultados || []} tocarPreview={tocarPreview} buscarLetra={buscarLetra} />
+            <MusicCard 
+                resultados={resultados || []}  
+                tocarPreview={tocarPreview} 
+                buscarLetra={buscarLetra} 
+                setIsPlaying={setIsPlaying} 
+                setCurrentIndex={setCurrentIndex} 
+                setPlaylist={setPlaylist}
+            />
         </div>
     )
 }
