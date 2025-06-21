@@ -16,6 +16,7 @@ import Sidebar from './components/Sidebar';
 import Register from './pages/Register';
 import CriarPlaylist from './pages/CriarPlaylist';
 
+
 function App() {
   const [query, setQuery] = useState('');
   const [resultados, setResultados] = useState([]);
@@ -131,6 +132,7 @@ function App() {
           <Route path="/login" element={<Login />} /> 
           <Route path="/register" element={<Register/>} />
           <Route path="/criar-playlist" element={<CriarPlaylist/>} />
+          <Route path="/search" element={<Search />} />
         </Routes>
         <audio ref={audioRef} />
     </div>

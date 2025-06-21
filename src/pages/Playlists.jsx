@@ -1,33 +1,36 @@
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Playlist = () => {
-  const { id } = useParams();
-  const playlists = JSON.parse(localStorage.getItem("playlists")) || [];
-  const playlist = playlists[id];
+function Playlists() {
+  const [playlists, setPlaylists] = useState([]);
+  const navigate = useNavigate();
 
-  const tocarPreview = (url) => {
-    const audio = new Audio(url);
-    audio.play();
-  };
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("playlists")) || [];
+    setPlaylists(stored);
+  }, []);
 
   return (
     <div className="playlist-page">
-      <h2>{playlist?.nome || "Playlist"}</h2>
-      {playlist?.musicas.length ? (
-        <ul className="musica-lista">
-          {playlist.musicas.map((musica, index) => (
+      <h1>Minhas Playlists</h1>
+      {playlists.length === 0 ? (
+        <p>Nenhuma playlist criada ainda.</p>
+      ) : (
+        <ul className="playlist-list">
+          {playlists.map((playlist, index) => (
             <li key={index}>
-              <span>{musica.titulo} - {musica.artista}</span>
-              <button onClick={() => tocarPreview(musica.preview)}>▶</button>
+              <button
+                className="playlist-item"
+                onClick={() => navigate(`/playlist/${index}`)}
+              >
+                {playlist.nome}
+              </button>
             </li>
           ))}
         </ul>
-      ) : (
-        <p>Essa playlist ainda não tem músicas.</p>
       )}
     </div>
   );
-};
+}
 
-export default Playlist;
-
+export default Playlists;

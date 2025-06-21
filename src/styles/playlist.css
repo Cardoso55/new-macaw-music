@@ -1,0 +1,38 @@
+.playlist-page h1,
+.playlist-view h1 {
+  font-size: 24px;
+  margin: 20px;
+  color: white;
+}
+
+.playlist-list,
+.musicas-lista {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.playlist-item,
+.musica-item button {
+  background-color: #2a2a2a;
+  color: white;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 16px;
+}
+
+.playlist-item:hover,
+.musica-item button:hover {
+  background-color: #3a3a3a;
+}
+
+.musica-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
