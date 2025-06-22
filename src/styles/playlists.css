@@ -1,0 +1,230 @@
+
+.playlists-container {
+  padding: 2rem;
+  color: white;
+  min-height: 100vh;
+  margin-left: 58px; /* Sidebar */
+  margin-top: 30px ;
+  padding-top: 80px; /* Header */
+  padding-left: 50px;
+  padding-right: 20px;
+  background-color: #121212;
+  min-height: 100vh;
+  color: white;
+  border-radius: 8px;
+  max-width: 1447px;
+}
+
+.playlists-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.playlist-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.btn-criar-playlist {
+  background-color: #0f55eb;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  margin-left: auto;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.btn-criar-playlist:hover {
+  background-color: #0d358d;
+}
+
+.playlist-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  justify-content: flex-start;
+}
+
+.playlist-card {
+  background-color: #1e1e1e;
+  border-radius: 1rem;
+  overflow: hidden;
+  text-decoration: none;
+  color: white;
+  width: 180px;
+  min-width: 180px;
+  max-width: 180px;
+  flex: 0 0 auto;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.playlist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.playlist-cover {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background-color: #2a2a2a;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.playlist-info {
+  padding: 1rem;
+}
+
+.playlist-info h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-info p {
+  font-size: 0.9rem;
+  color: #b3b3b3;
+}
+
+.sem-playlists {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.btn-criar-centralizada {
+  display: inline-block;
+  margin-top: 1rem;
+  background-color: #0f55eb;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.btn-criar-centralizada:hover {
+  background-color: #093085;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeInScale 0.3s ease-out forwards;
+}
+
+.modal-content {
+  background: #1e1e1e;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  width: 300px;
+  transform: scale(0.95);
+  opacity: 0;
+  animation: fadeInScale 0.3s ease-out forwards;
+}
+
+.modal-content h2 {
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #333;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.input::placeholder {
+  color: #aaa;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-confirm,
+.btn-cancel {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-confirm {
+  background-color: #22c55e;
+  color: white;
+}
+
+.btn-confirm:hover {
+  background-color: #16a34a;
+}
+
+.btn-cancel {
+  background-color: #ef4444;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #dc2626;
+}
+
+/* Animações de entrada/saída do modal */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOutScale {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.modal-overlay.fade-out,
+.modal-content.fade-out {
+  animation: fadeOutScale 0.2s ease-in forwards;
+}

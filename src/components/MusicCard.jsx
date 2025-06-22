@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import './Searchbar';
 import '../styles/musiccard.css';
 
-
-function MusicCard({resultados = [] , tocarPreview , buscarLetra , setIsPlaying, setPlaylist, setCurrentIndex}) {
+function MusicCard({ resultados = [], tocarPreview, buscarLetra, setIsPlaying, setPlaylist, setCurrentIndex }) {
     const [mostrarDropdown, setMostrarDropdown] = useState(null); // controla o dropdown por música
     const [playlists, setPlaylists] = useState([]);
 
@@ -12,23 +11,39 @@ function MusicCard({resultados = [] , tocarPreview , buscarLetra , setIsPlaying,
         setPlaylists(stored);
     }, []);
 
-   const adicionarMusicaNaPlaylist = (playlistIndex, track) => {
-    const novaMusica = {
-        titulo: track.title,
-        artista: track.artist.name,
-        preview: track.preview,
-        capa: track.album.cover_medium,
-        duracao: track.duration
+    const adicionarMusicaNaPlaylist = (playlistIndex, track) => {
+        if (
+            !track ||
+            !track.title ||
+            !track.artist ||
+            !track.artist.name ||
+            !track.album ||
+            !track.album.cover_medium ||
+            !track.duration
+        ) {
+            console.error("Erro: Track com dados incompletos ao tentar adicionar na playlist:", track);
+            alert("Erro ao adicionar música: os dados da música estão incompletos.");
+            return;
+        }
+
+        const novaMusica = {
+            titulo: track.title,
+            artista: track.artist.name,
+            preview: track.preview,
+            capa: track.album.cover_medium,
+            duracao: track.duration,
+            albumId: track.album.id
+        };
+
+        const updatedPlaylists = [...playlists];
+        updatedPlaylists[playlistIndex].musicas.push(novaMusica);
+
+        localStorage.setItem("playlists", JSON.stringify(updatedPlaylists));
+        setPlaylists(updatedPlaylists);
+        setMostrarDropdown(null);
+
+        alert(`Música "${track.title}" adicionada à playlist "${updatedPlaylists[playlistIndex].nome}"!`);
     };
-
-    const updatedPlaylists = [...playlists];
-    updatedPlaylists[playlistIndex].musicas.push(novaMusica);
-
-    localStorage.setItem("playlists", JSON.stringify(updatedPlaylists));
-    setPlaylists(updatedPlaylists);
-    setMostrarDropdown(null);
-};
-
 
     return (
         <div className="grid-container">
@@ -37,11 +52,13 @@ function MusicCard({resultados = [] , tocarPreview , buscarLetra , setIsPlaying,
                     <div className="card-img">
                         <img className="music-img" src={track.album.cover_big} alt={track.title} />
                         <div className="play">
-                            <button onClick={() => {
-                                setPlaylist(resultados);
-                                setCurrentIndex(i);
-                                setIsPlaying(true);
-                            }}>
+                            <button
+                                onClick={() => {
+                                    setPlaylist(resultados);
+                                    setCurrentIndex(i);
+                                    setIsPlaying(true);
+                                }}
+                            >
                                 <span className="fas fa-play"></span>
                             </button>
                         </div>

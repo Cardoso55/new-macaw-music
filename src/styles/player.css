@@ -52,3 +52,25 @@
 .player-controls button:hover {
   transform: scale(1.2);
 }
+
+.go-to-album-btn {
+  background-color: transparent;
+  color: #1DB954;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.go-to-album-btn:hover {
+  color: #1ed760;
+}
+.track-title-link{
+  text-decoration: none;
+  color: white;
+}
+
+.track-title-link:hover{
+  text-decoration: underline;
+}

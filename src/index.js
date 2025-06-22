@@ -18,3 +18,9 @@ window.onerror = function (message, source, lineno, colno, error) {
   console.error("Erro global capturado:", message, source, lineno, colno, error);
 };
 
+window.addEventListener("error", function (e) {
+  if (e.message && e.message.includes("Script error")) {
+    console.warn("Ignorado erro de script externo:", e.message);
+    e.preventDefault();  // Isso impede o erro de quebrar a tela
+  }
+});

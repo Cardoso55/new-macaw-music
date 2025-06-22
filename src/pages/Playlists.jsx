@@ -1,34 +1,43 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import Sidebar from "../components/Sidebar";
+import HeaderPlaylists from "../components/HeaderPlaylists";
+import PlaylistsContent from "../components/PlaylistsContent";
 
-function Playlists() {
-  const [playlists, setPlaylists] = useState([]);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("playlists")) || [];
-    setPlaylists(stored);
-  }, []);
+function Playlists({ query, setQuery, buscarMusica, resultados, tocarPreview, buscarLetra, setPlaylist, setCurrentIndex, setIsPlaying }) {
 
   return (
-    <div className="playlist-page">
-      <h1>Minhas Playlists</h1>
-      {playlists.length === 0 ? (
-        <p>Nenhuma playlist criada ainda.</p>
-      ) : (
-        <ul className="playlist-list">
-          {playlists.map((playlist, index) => (
-            <li key={index}>
-              <button
-                className="playlist-item"
-                onClick={() => navigate(`/playlist/${index}`)}
-              >
-                {playlist.nome}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "black", color: "white" }}>
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Conteúdo principal */}
+      <div
+        style={{
+          flex: 1,
+          marginLeft: "240px",
+          padding: "20px 32px",
+          maxWidth: "1600px",
+          marginRight: "auto",
+        }}
+      >
+        {/* Header específico das playlists com a Searchbar */}
+        <HeaderPlaylists query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
+
+        {/* Conteúdo da página */}
+        <div style={{ marginTop: "20px" }}>
+          <PlaylistsContent 
+  query={query} 
+  setQuery={setQuery} 
+  buscarMusica={buscarMusica} 
+  resultados={resultados}
+  tocarPreview={tocarPreview}
+  buscarLetra={buscarLetra}
+  setPlaylist={setPlaylist}
+  setCurrentIndex={setCurrentIndex}
+  setIsPlaying={setIsPlaying}
+/>
+
+        </div>
+      </div>
     </div>
   );
 }

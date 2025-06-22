@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../styles/player.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faForward, faBackward } from '@fortawesome/free-solid-svg-icons';
 
-function Player({ playlist = [], currentIndex, setCurrentIndex, isPlaying, setIsPlaying }) {
-  const navigate = useNavigate();
+function PlaylistPlayer({ playlist, currentIndex, setCurrentIndex, isPlaying, setIsPlaying }) {
   const audioRef = useRef(null);
-  const [volume, setVolume] = useState(1);  
+  const [volume, setVolume] = useState(1); // Volume vai de 0.0 a 1.0
   const currentTrack = playlist[currentIndex];
+
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -42,12 +42,6 @@ function Player({ playlist = [], currentIndex, setCurrentIndex, isPlaying, setIs
     }
   };
 
-  const irParaAlbum = () => {
-    if (currentTrack?.album?.id) {
-      navigate(`/album/${currentTrack.album.id}`);
-    }
-  };
-
   if (!currentTrack) return null;
 
   return (
@@ -55,23 +49,29 @@ function Player({ playlist = [], currentIndex, setCurrentIndex, isPlaying, setIs
       <audio ref={audioRef} src={currentTrack.preview} onEnded={playNext} />
 
       <img
-        src={currentTrack.album.cover_small}
-        alt={currentTrack.title}
+        src={currentTrack.capa}
+        alt={currentTrack.titulo}
         className="player-cover"
       />
 
-      <div className="player-info">
-        <button onClick={irParaAlbum} className="player-track-title">
-          <h4>{currentTrack.title}</h4>
-        </button>
-        <p>{currentTrack.artist.name}</p>
-      </div>
+     <div className="player-info">
+  {currentTrack.albumId ? (
+    <Link to={`/album/${currentTrack.albumId}`} className="track-title-link">
+      {currentTrack.titulo}
+    </Link>
+  ) : (
+    <h4>{currentTrack.titulo}</h4>
+  )}
+  <p>{currentTrack.artista}</p>
+</div>
+
 
       <div className="player-controls">
         <button onClick={playPrev}><FontAwesomeIcon icon={faBackward} /></button>
         <button onClick={togglePlay}>
           <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
         </button>
+        
         <button onClick={playNext}><FontAwesomeIcon icon={faForward} /></button>
       </div>
 
@@ -89,4 +89,4 @@ function Player({ playlist = [], currentIndex, setCurrentIndex, isPlaying, setIs
   );
 }
 
-export default Player;
+export default PlaylistPlayer;

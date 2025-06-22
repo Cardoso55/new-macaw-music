@@ -16,6 +16,7 @@ import Sidebar from './components/Sidebar';
 import Register from './pages/Register';
 import Player from './components/Player';
 import CriarPlaylist from './pages/CriarPlaylist';
+import HeaderPlaylists from './components/HeaderPlaylists';
 
 
 function App() {
@@ -209,7 +210,23 @@ function App() {
           }/>
           <Route path="/artist/:id" element={<Artist />} />
           <Route path="/album/:id" element={<Album />} />
-          <Route path="/playlists" element={<Playlists />} />
+          <Route 
+           path="/playlists" 
+            element={
+            <Playlists 
+             query={query} 
+      setQuery={setQuery} 
+      buscarMusica={buscarMusica} 
+      resultados={resultados} 
+      tocarPreview={tocarPreview}
+      buscarLetra={buscarLetra}
+      setPlaylist={setPlaylist}
+      setCurrentIndex={setCurrentIndex}
+      setIsPlaying={setIsPlaying}
+            />
+          } 
+        />
+
           <Route path="/playlist/:id" element={<PlaylistView />} />
           <Route path="/history" element={<History />} />
           <Route path="/login" element={<Login />} /> 

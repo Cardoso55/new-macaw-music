@@ -14,27 +14,30 @@ function Sidebar() {
         setPlaylists(stored);
     }, []);
 
-    const irParaBusca = () => {
-        navigate('/search');
+    const irParaHome = () => {
+        navigate('/');
     };
 
     return (
         <div className="sidebar">
             <nav className="sidebar__navigation">
-                <div className="logo">
-                    <a href="./index.html">
-                        <img src={logo} alt="Logo do spotify" />
-                    </a>
-                </div>
+             <div className="logo" style={{ display: 'flex', alignItems: 'center' }}>
+    <button onClick={irParaHome} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>
+        <img src={logo} alt="Macaw Musics Logo" style={{ width: '30px', height: '30px' }} />
+        <span style={{ marginLeft: '4px', fontWeight: 'bold', color: '#fff', fontSize: '16px' }}>Macaw Musics</span>
+    </button>
+</div>
+
+
                 <ul>
                     <li>
-                        <button>
+                        <button onClick={irParaHome}>
                             <span className="fa fa-home"></span>
                             <span className="margem">Início</span>
                         </button>
                     </li>
                     <li>
-                        <button onClick={irParaBusca}>
+                        <button onClick={irParaHome}>
                             <span className="fa fa-search"></span>
                             <span className="margem">Buscar</span>
                         </button>
@@ -57,20 +60,19 @@ function Sidebar() {
                 <div className="content__library">
                     <span className="title">Gerencie suas playlists</span>
                     <span className="subtitle">Escolha uma playlist abaixo:</span>
-
                     <button className="btn" onClick={() => navigate('/playlists')}>
-  <span className="text__btn">Minhas Playlists</span>
-</button>
-
+                        <span className="text__btn">Minhas Playlists</span>
+                    </button>
                 </div>
 
-                <div className="content__library">
+                {/* Removendo a área de Podcasts como você pediu */}
+                {/* <div className="content__library">
                     <span className="title">Que tal seguir um podcast novo?</span>
                     <span className="subtitle">Avisaremos você sobre novos episódios.</span>
                     <button className="btn">
                         <span className="text__btn">Explore podcasts</span>
                     </button>
-                </div>
+                </div> */}
 
                 <div className="list">
                     <span className="item__list">Legal</span>
