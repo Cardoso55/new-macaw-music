@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/player.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,11 +7,11 @@ import { faPlay, faPause, faForward, faBackward } from '@fortawesome/free-solid-
 function Player({ playlist = [], currentIndex, setCurrentIndex, isPlaying, setIsPlaying, audioRef }) {
   const navigate = useNavigate();
   const [volume, setVolume] = useState(1);  
-  const currentTrack = playlist[currentIndex];
+  const currentTrack = playlist?.[currentIndex];
 
   // Troca de música
   useEffect(() => {
-    if (!audioRef.current || !currentTrack) return;
+    if (!audioRef?.current || !currentTrack) return;
 
     const player = audioRef.current;
 
@@ -22,14 +22,16 @@ function Player({ playlist = [], currentIndex, setCurrentIndex, isPlaying, setIs
     }
   }, [currentTrack]);
 
-  // Play/pause
+  // Volume
   useEffect(() => {
-    if (!audioRef.current) return;
+    if (!audioRef?.current) return;
     audioRef.current.volume = volume;
   }, [volume]);
 
+  // Play/Pause
   useEffect(() => {
-    if (!audioRef.current) return;
+    if (!audioRef?.current || !currentTrack) return;
+
     if (isPlaying) {
       audioRef.current.play().catch((err) => {
         console.warn('🔇 Erro ao tentar dar play:', err.message);
@@ -39,24 +41,21 @@ function Player({ playlist = [], currentIndex, setCurrentIndex, isPlaying, setIs
     }
   }, [isPlaying]);
 
+  // Quando a música termina
   useEffect(() => {
-  const player = audioRef.current;
-  if (!player) return;
+    const player = audioRef?.current;
+    if (!player) return;
 
-  const handleEnded = () => {
-    playNext();
-  };
+    const handleEnded = () => {
+      playNext();
+    };
 
-  player.addEventListener('ended', handleEnded);
-
-  return () => {
-    player.removeEventListener('ended', handleEnded); // limpa o listener quando muda
-  };
-}, [audioRef, currentIndex, playlist]);
-
+    player.addEventListener('ended', handleEnded);
+    return () => player.removeEventListener('ended', handleEnded);
+  }, [audioRef, currentIndex, playlist]);
 
   const togglePlay = () => {
-    const player = audioRef.current;
+    const player = audioRef?.current;
     if (!player) return;
 
     if (player.paused) {
@@ -90,16 +89,21 @@ function Player({ playlist = [], currentIndex, setCurrentIndex, isPlaying, setIs
     }
   };
 
-  if (!currentTrack) return null;
+  if (!currentTrack || !audioRef?.current) return null;
 
   return (
     <div className="player-container">
-      <img src={currentTrack.album.cover_small} alt={currentTrack.title} className="player-cover" />
+      <img
+        src={currentTrack.album?.cover_small || currentTrack.album?.cover || ''}
+        alt={currentTrack.title}
+        className="player-cover"
+      />
+
       <div className="player-info">
         <button onClick={irParaAlbum} className="player-track-title">
           <h4>{currentTrack.title}</h4>
         </button>
-        <p>{currentTrack.artist.name}</p>
+        <p>{currentTrack.artist?.name || 'Artista desconhecido'}</p>
       </div>
 
       <div className="player-controls">

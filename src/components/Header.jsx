@@ -7,7 +7,7 @@ import '../styles/header.css';
 
 
 function Header({query , setQuery , buscarMusica, buscarArtista}) {
-    const navigate = useNavigate;
+    const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('macawUser'));
 
   const irParaLogin = () => {
@@ -44,7 +44,7 @@ function Header({query , setQuery , buscarMusica, buscarArtista}) {
           </button>
         </div>
 
-        <Searchbar query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
+        <Searchbar query={query} setQuery={setQuery} buscarMusica={buscarMusica} buscarArtista={buscarArtista}/>
 
         <div className="header__login">
           {user ? (

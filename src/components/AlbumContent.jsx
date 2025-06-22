@@ -5,6 +5,7 @@ import "../styles/album.css";
 function AlbumContent() {
   const { id } = useParams();
   const [album, setAlbum] = useState(null);
+  const [erro, setErro] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(null);
   const audioRef = useRef(null);
 
@@ -31,10 +32,11 @@ function AlbumContent() {
         });
       } catch (error) {
         console.error(error);
+        setErro(true);
       } finally {
         delete window[callbackName];
-        const existingScript = document.getElementById(callbackName);
-        if (existingScript) existingScript.remove();
+        const script = document.getElementById(callbackName);
+        if (script) script.remove();
       }
     };
 
@@ -44,16 +46,18 @@ function AlbumContent() {
 
     script.onerror = () => {
       console.error("Erro ao carregar script JSONP do álbum.");
-      setAlbum(null);
+      setErro(true);
       delete window[callbackName];
+      const script = document.getElementById(callbackName);
+      if (script) script.remove();
     };
 
     document.body.appendChild(script);
 
     return () => {
       delete window[callbackName];
-      const existingScript = document.getElementById(callbackName);
-      if (existingScript) existingScript.remove();
+      const script = document.getElementById(callbackName);
+      if (script) script.remove();
     };
   }, [id]);
 
@@ -65,7 +69,23 @@ function AlbumContent() {
     }
   };
 
-  if (!album) return <p className="p-6 text-center text-lg">Carregando álbum...</p>;
+  // Tratamento de erros
+  if (erro) {
+    return (
+      <div className="p-6 text-center text-red-600 text-lg">
+        Erro ao carregar o álbum. Verifique o link ou tente novamente mais tarde.
+      </div>
+    );
+  }
+
+  // Carregando
+  if (!album) {
+    return (
+      <div className="p-6 text-center text-lg text-gray-600">
+        Carregando álbum...
+      </div>
+    );
+  }
 
   return (
     <div className="album-page">
