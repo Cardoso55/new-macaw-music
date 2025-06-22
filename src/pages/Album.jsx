@@ -1,5 +1,21 @@
-// Página de Album
-// Capa do álbum
-// Nome, artista, ano
-// Lista de faixas com botão de play
-// Pode tocar o álbum inteiro como fila
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
+import Player from "../components/Player";
+import AlbumContent from "../components/AlbumContent";
+
+function Album() {
+  return (
+    <div className="app-layout">
+      <Sidebar />
+
+      <div className="main-content">
+        <Header />
+        <AlbumContent />
+      </div>
+
+      <Player />
+    </div>
+  );
+}
+
+export default Album;

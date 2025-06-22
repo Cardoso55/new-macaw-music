@@ -8,6 +8,7 @@
 
 import ArtistCard from "../components/ArtistCard";
 import MusicCard from "../components/MusicCard";
+import AlbumCard from "../components/AlbumCard";
 
 function Search({resultados = [] , tocarPreview , buscarLetra , setIsPlaying ,setCurrentIndex, setPlaylist, artistas = [] , topMusicas}) {
     return (

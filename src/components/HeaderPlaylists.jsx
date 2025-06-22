@@ -1,13 +1,17 @@
+// Barra superior com logo, menu, busca, entrar, increva-se e etc.
 import setaE from '../assets/icons/small-left.png';
 import setaD from '../assets/icons/small-right.png';
 import { useNavigate } from 'react-router';
+
 import Searchbar from '../components/Searchbar';
 import '../styles/reset.css';
-import '../styles/header.css';
+import '../styles/headerPlaylists.css'
 
 
-function Header({query , setQuery , buscarMusica, buscarArtista}) {
-    const navigate = useNavigate;
+function HeaderPlaylists({query , setQuery , buscarMusica}) {
+   const navigate = useNavigate();
+   
+
   const user = JSON.parse(localStorage.getItem('macawUser'));
 
   const irParaLogin = () => {
@@ -33,7 +37,7 @@ function Header({query , setQuery , buscarMusica, buscarArtista}) {
   };
 
   return (
-    <div className="header">
+    <div className="header-playlist">
       <nav className="header__navigation">
         <div className="navigation">
           <button className="arrow-left" onClick={voltar}>
@@ -64,4 +68,4 @@ function Header({query , setQuery , buscarMusica, buscarArtista}) {
   );
 }
 
-export default Header;
+export default HeaderPlaylists;

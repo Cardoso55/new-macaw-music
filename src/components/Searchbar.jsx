@@ -1,34 +1,46 @@
-// Barra de busca para pesquisar músicas, artistas ou álbuns. Aparece no header e em outros lugares
-// Exibe sugestões de pesquisa enquanto o usuário digita
 import search from '../assets/icons/search.png';
-
-
 import '../styles/reset.css';
 import '../styles/searchbar.css';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 
+function Searchbar({ query, setQuery, buscarMusica , buscarArtista}) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const inputRef = useRef(null);
 
-function Searchbar ({query, setQuery, buscarMusica, buscarArtista}){
-    console.log('query:', query);
-    console.log('setQuery:', setQuery); // ← isso aqui deve ser uma função
-    console.log('buscarMusica:', buscarMusica);
+  const handleFocus = () => {
+    if (location.pathname !== '/') {
+      navigate('/');
+    }
+  };
 
-    return(
-        <div className="header__search">
-            <img src={search} alt="Procurar" />
-            <input
-                type="text"
-                maxLength="800"
-                placeholder="O que você quer ouvir?"
-                value={query}
-                onChange={(e) => {
-                const val = e.target.value;
-                setQuery(val);
-                buscarMusica(val);
-                buscarArtista(val);
-                }}
-            />
-        </div>
-    )
+  useEffect(() => {
+    // Quando o usuário for redirecionado pro "/", foca automaticamente
+    if (location.pathname === '/' && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [location.pathname]);
+
+  return (
+    <div className="header__search">
+      <img src={search} alt="Procurar" />
+      <input
+        type="text"
+        maxLength="800"
+        placeholder="O que você quer ouvir?"
+        value={query}
+        onFocus={handleFocus}
+        onChange={(e) => {
+          const val = e.target.value;
+          setQuery(val);
+          buscarMusica(val);
+          buscarArtista(val);
+        }}
+        ref={inputRef}
+      />
+    </div>
+  );
 }
 
-export default Searchbar;  
+export default Searchbar;

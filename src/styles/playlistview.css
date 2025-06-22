@@ -1,32 +1,22 @@
-.sidebar-playlists {
-  color: white;
-  padding: 1rem;
-}
-
-.criar-btn {
-  display: inline-block;
-  margin: 0.5rem 0;
-  background: white;
-  color: black;
-  padding: 0.5rem;
-  border-radius: 8px;
-  text-decoration: none;
-}
-
-.playlist-link {
-  display: block;
-  margin: 0.3rem 0;
-  padding: 0.4rem;
-  background: #1a1a1a;
-  color: white;
-  border-radius: 6px;
-}
-
 .playlist-page {
   padding: 24px;
   color: white;
   background-color: #121212;
   min-height: 100vh;
+}
+
+.back-button {
+  background: none;
+  color: #ffffff;
+  border: none;
+  font-size: 20px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.back-button:hover {
+  text-decoration: underline;
 }
 
 .playlist-header {
@@ -90,20 +80,65 @@
 .duration {
   color: #b3b3b3;
   font-size: 14px;
-  margin-left: auto;
 }
 
-.music-item button {
-  background-color: #1db954;
+.buttons button {
+  margin-left: 8px;
+  background-color: transparent;
   border: none;
-  padding: 6px 12px;
-  color: white;
+  padding: 6px 10px;
+  color: rgb(255, 255, 255);
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
+  font-size: 14px;
 }
 
-.music-item button:hover {
-  background-color: #1ed760;
+.buttons button:nth-child(2) {
+  background-color: #227eca;
 }
 
+.buttons button:nth-child(3) {
+  background-color: transparent;
+  color: white;
+}
+
+.buttons button:nth-child(3):hover {
+  background-color: white;
+  color: #181818;
+}
+.buttons button:nth-child(1):hover {
+  background-color: white;
+  color: #181818;
+}
+
+.buttons button:hover {
+  filter: brightness(1.2);
+
+}
+
+.lyrics-section {
+  background: #181818;
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+.excluir-playlist-btn {
+  margin-left: auto;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.excluir-playlist-btn:hover {
+  background-color: #b71c1c;
+}

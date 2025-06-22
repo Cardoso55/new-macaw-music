@@ -1,5 +1,6 @@
 // Parte principal da Home, onde vai vir os carrossel e tudo mais
 
+import Searchbar from './Searchbar';
 import Carousel from './Carousel';
 import Search from '../pages/Search';
 import '../styles/main.css';

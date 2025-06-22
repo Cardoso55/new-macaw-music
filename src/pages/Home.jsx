@@ -3,10 +3,8 @@
 // Sugestões personalizadas
 // “Top da semana”, “Novidades”, etc.
 // Usa vários MusicCard, Carousel, Player, etc.
-
-
-
 function Home(){
+
 }
 
 export default Home;
