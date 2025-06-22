@@ -113,3 +113,66 @@ html, body {
     font-size:x-large;
     margin: 20px;
 }
+
+@media (max-width: 768px) {
+  .login-container .conteudo {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .login-container img {
+    width: 120px;
+    margin: 20px 0 30px 0;
+  }
+
+  .login-container .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .login-container .form-group input {
+    padding: 12px 0;
+    font-size: 0.9rem;
+  }
+
+  .login-container button {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .titulo-cadastro {
+    font-size: large;
+    margin: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container .conteudo {
+    max-width: 95%;
+    padding: 10px;
+  }
+
+  .login-container img {
+    width: 100px;
+    margin: 15px 0 20px 0;
+  }
+
+  .login-container .form-group label {
+    font-size: 0.8rem;
+  }
+
+  .login-container .form-group input {
+    padding: 10px 0;
+    font-size: 0.85rem;
+  }
+
+  .login-container button {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .titulo-cadastro {
+    font-size: medium;
+    margin: 10px;
+    text-align: center;
+  }
+}

@@ -11,16 +11,23 @@ function Player({ playlist = [], currentIndex, setCurrentIndex, isPlaying, setIs
 
   // Troca de música
   useEffect(() => {
-    if (!audioRef?.current || !currentTrack) return;
+  if (!audioRef?.current || !currentTrack) return;
 
-    const player = audioRef.current;
+  const player = audioRef.current;
 
-    if (player.src !== currentTrack.preview) {
-      player.pause();
-      player.src = currentTrack.preview;
-      player.load();
+  if (player.src !== currentTrack.preview) {
+    player.pause();
+    player.src = currentTrack.preview;
+    player.load();
+
+    if (isPlaying) {
+      player.play().catch((err) => {
+        console.warn('🔇 Erro ao tentar dar play na nova música:', err.message);
+      });
     }
-  }, [currentTrack]);
+  }
+}, [currentTrack]);
+
 
   // Volume
   useEffect(() => {

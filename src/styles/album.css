@@ -13,9 +13,6 @@ border-radius: 8px;
   margin-left: 332px;       /* Centraliza horizontalmente dentro da área entre sidebar e player */
 }
 
-
-
-
 .album-header {
   display: flex;
   gap: 24px;

@@ -132,3 +132,23 @@ h2 {
   display: flex;
   gap: 8px;
 }
+
+@media (max-width: 600px) {
+  .artist-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .artist-header img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .button-play-artist,
+  .btn-letra-artist {
+    width: 100%;
+    text-align: center;
+  }
+}
+

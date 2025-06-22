@@ -25,3 +25,52 @@
     height: 16px;
     margin-left: 10px;
 }
+
+
+@media (max-width: 1024px) {
+  .header__search {
+    width: 250px;
+  }
+
+  .header__search input {
+    padding: 0px 50px 0px 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header__search {
+    width: 180px;
+    height: 40px;
+  }
+
+  .header__search input {
+    padding: 0px 30px 0px 10px;
+    font-size: 12px;
+  }
+
+  .header__search img {
+    width: 14px;
+    height: 14px;
+    margin-left: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header__search {
+    width: 140px;
+    height: 36px;
+    margin-left: 4px;
+  }
+
+  .header__search input {
+    padding: 0px 20px 0px 8px;
+    font-size: 11px;
+  }
+
+  .header__search img {
+    width: 12px;
+    height: 12px;
+    margin-left: 6px;
+  }
+}

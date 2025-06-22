@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router';
 import Searchbar from '../components/Searchbar';
 import '../styles/reset.css';
 import '../styles/header.css';
+import { useState } from "react";
 
 
 function Header({query , setQuery , buscarMusica, buscarArtista}) {
     const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('macawUser'));
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const irParaLogin = () => {
     navigate('/login');
@@ -32,6 +34,10 @@ function Header({query , setQuery , buscarMusica, buscarArtista}) {
     window.location.reload();  // Pra forçar o header recarregar (opcional, mas garante)
   };
 
+  const irParaPlaylists = () => {
+    navigate('/playlists')
+  }
+
   return (
     <div className="header">
       <nav className="header__navigation">
@@ -44,8 +50,14 @@ function Header({query , setQuery , buscarMusica, buscarArtista}) {
           </button>
         </div>
 
-        <Searchbar query={query} setQuery={setQuery} buscarMusica={buscarMusica} buscarArtista={buscarArtista}/>
+        <Searchbar
+          query={query}
+          setQuery={setQuery}
+          buscarMusica={buscarMusica}
+          buscarArtista={buscarArtista}
+        />
 
+        {/* Bloco de botões de login no Desktop */}
         <div className="header__login">
           {user ? (
             <>
@@ -59,7 +71,32 @@ function Header({query , setQuery , buscarMusica, buscarArtista}) {
             </>
           )}
         </div>
+
+        {/* Menu Hamburguer (Mobile) */}
+        <button className="menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          ☰
+        </button>
       </nav>
+
+      {/* Dropdown Mobile */}
+      {isMobileMenuOpen && (
+        <div className="mobile-dropdown">
+          {user ? (
+            <>
+              <span className="username">Olá, {user.username}</span>
+              <button onClick={irParaPlaylists}>Minhas Playlists</button>
+              <button onClick={handleLogout} className="logout">Sair</button>
+               <span className="fas fa-home logout"  onClick={navigate('/')}></span>
+            </>
+          ) : (
+            <>
+              <button onClick={irParaRegister}>Inscreva-se</button>
+              <button onClick={irParaLogin}>Entrar</button>
+              <span className="fas fa-home logout"  onClick={navigate('/')}></span>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

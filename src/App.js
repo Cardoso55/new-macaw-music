@@ -16,6 +16,8 @@ import Player from './components/Player';
 import CriarPlaylist from './pages/CriarPlaylist';
 import ArtistCard from './components/ArtistCard';
 import HeaderPlaylists from './components/HeaderPlaylists';
+import AlbumContent from './components/AlbumContent';
+import { useLocation } from 'react-router-dom';
 
 
 function App() {
@@ -45,6 +47,9 @@ function App() {
   ];
   const [musicasPorGenero, setMusicasPorGenero] = useState({});
   const audioRef = useRef(null);
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const showPlayer = currentPath === '/' || currentPath.startsWith('/artist/');
 
   useEffect(() => {
     buscarGeneros();
@@ -226,7 +231,23 @@ function App() {
           />
           
           } />
-          <Route path="/album/:id" element={<Album />} />
+         <Route
+  path="/album/:id"
+  element={ 
+
+
+    < >
+    <Sidebar />
+    <Header />
+    <AlbumContent
+      setPlaylist={setPlaylist}
+      setCurrentIndex={setCurrentIndex}
+      setIsPlaying={setIsPlaying}
+    />
+    </>
+  }
+/>
+
           <Route 
            path="/playlists" 
             element={
@@ -244,21 +265,23 @@ function App() {
           } 
         />
 
-          <Route path="/playlist/:id" element={<PlaylistView />} />
+          <Route path="/playlist/:id" element={<PlaylistView buscarLetra={buscarLetra}/>} />
           <Route path="/history" element={<History />} />
           <Route path="/login" element={<Login />} /> 
           <Route path="/register" element={<Register/>} />
           <Route path="/criar-playlist" element={<CriarPlaylist/>} />
           <Route path="/search" element={<Search />} />
         </Routes>
-        <Player 
-          playlist={playlist} 
-          currentIndex={currentIndex} 
-          setCurrentIndex={setCurrentIndex} 
-          isPlaying={isPlaying} 
-          setIsPlaying={setIsPlaying}
-          audioRef={audioRef}
-        />
+        {showPlayer && (
+  <Player 
+    playlist={playlist} 
+    currentIndex={currentIndex} 
+    setCurrentIndex={setCurrentIndex} 
+    isPlaying={isPlaying} 
+    setIsPlaying={setIsPlaying}
+    audioRef={audioRef}
+  />
+)}
         <audio ref={audioRef} />
 
         {mostrarModal && (

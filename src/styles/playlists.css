@@ -1,19 +1,24 @@
-
 .playlists-container {
-  padding: 2rem;
+  padding: 2rem 1.25rem 2rem 3.125rem; /* Top/Right/Bottom/Left */
   color: white;
   min-height: 100vh;
-  margin-left: 58px; /* Sidebar */
-  margin-top: 30px ;
+  margin-left: 58px; /* Sidebar espaço */
   padding-top: 80px; /* Header */
-  padding-left: 50px;
-  padding-right: 20px;
   background-color: #121212;
-  min-height: 100vh;
-  color: white;
   border-radius: 8px;
   max-width: 1447px;
 }
+
+.page-container {
+  flex: 1;
+  margin-left: 240px;
+  padding: 20px 32px;
+  max-width: 1600px;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+}
+
 
 .playlists-header {
   display: flex;
@@ -201,7 +206,7 @@
   background-color: #dc2626;
 }
 
-/* Animações de entrada/saída do modal */
+/* Animações Modal */
 @keyframes fadeInScale {
   0% {
     opacity: 0;
@@ -227,4 +232,128 @@
 .modal-overlay.fade-out,
 .modal-content.fade-out {
   animation: fadeOutScale 0.2s ease-in forwards;
+}
+
+/* ======= RESPONSIVO ======= */
+
+@media (max-width: 1024px) {
+  .playlists-container {
+    margin-left: -30px;
+    padding-left: 16px;
+    padding-right: 16px;
+    max-width: 100%;
+  }
+
+  .playlist-grid {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .page-container {
+    flex: 1;
+    margin-left: 20px;
+    padding: 20px 32px;
+    max-width: 1600px;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+  }
+ 
+.app-container {
+    flex-direction: column;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .playlists-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .playlist-title {
+    font-size: 2rem;
+  }
+
+  .btn-criar-playlist {
+    width: 100%;
+    text-align: center;
+    margin-left: 0;
+  }
+
+  .playlist-grid {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .playlist-card {
+    width: 140px;
+    min-width: 140px;
+    max-width: 140px;
+  }
+
+  .playlist-cover {
+    height: 140px;
+  }
+
+  .playlist-info h2 {
+    font-size: 1rem;
+  }
+
+  .playlist-info p {
+    font-size: 0.8rem;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .playlist-title {
+    font-size: 1.5rem;
+  }
+
+  .playlist-grid {
+    gap: 0.8rem;
+  }
+
+  .playlist-card {
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+  }
+
+  .playlist-cover {
+    height: 120px;
+  }
+
+  .playlist-info h2 {
+    font-size: 0.9rem;
+  }
+
+  .playlist-info p {
+    font-size: 0.7rem;
+  }
+
+  .btn-criar-playlist,
+  .btn-criar-centralizada {
+    width: 100%;
+    text-align: center;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .playlists-container {
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: 5px;
+  }
 }

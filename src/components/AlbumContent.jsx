@@ -1,13 +1,11 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import "../styles/album.css";
 
-function AlbumContent() {
+function AlbumContent({ setPlaylist, setCurrentIndex, setIsPlaying }) {
   const { id } = useParams();
   const [album, setAlbum] = useState(null);
   const [erro, setErro] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState(null);
-  const audioRef = useRef(null);
 
   useEffect(() => {
     const callbackName = `jsonp_callback_${Date.now()}`;
@@ -28,10 +26,16 @@ function AlbumContent() {
             title: track.title,
             preview: track.preview,
             duration: track.duration,
+            album: {
+              id: data.id,
+              cover_small: data.cover_small,
+              cover: data.cover_medium,
+            },
+            artist: { name: data.artist.name },
           })),
         });
       } catch (error) {
-        console.error(error);
+        console.error("Erro no JSONP Deezer:", error);
         setErro(true);
       } finally {
         delete window[callbackName];
@@ -45,7 +49,7 @@ function AlbumContent() {
     script.id = callbackName;
 
     script.onerror = () => {
-      console.error("Erro ao carregar script JSONP do álbum.");
+      console.error("Erro ao carregar o script JSONP do álbum.");
       setErro(true);
       delete window[callbackName];
       const script = document.getElementById(callbackName);
@@ -61,15 +65,14 @@ function AlbumContent() {
     };
   }, [id]);
 
-  const playTrack = (track) => {
-    setCurrentTrack(track);
-    if (audioRef.current) {
-      audioRef.current.load();
-      audioRef.current.play();
-    }
+  const playTrack = (trackIndex) => {
+    if (!album || !album.tracks) return;
+
+    setPlaylist(album.tracks);
+    setCurrentIndex(trackIndex);
+    setIsPlaying(true);
   };
 
-  // Tratamento de erros
   if (erro) {
     return (
       <div className="p-6 text-center text-red-600 text-lg">
@@ -78,7 +81,6 @@ function AlbumContent() {
     );
   }
 
-  // Carregando
   if (!album) {
     return (
       <div className="p-6 text-center text-lg text-gray-600">
@@ -99,7 +101,7 @@ function AlbumContent() {
 
       <h2 className="tracklist">Músicas</h2>
       <ul className="tracklist">
-        {album.tracks.map((track) => (
+        {album.tracks.map((track, index) => (
           <li key={track.id}>
             <div>
               <p className="track-title">{track.title}</p>
@@ -107,22 +109,12 @@ function AlbumContent() {
                 {Math.floor(track.duration / 60)}:{String(track.duration % 60).padStart(2, "0")}
               </p>
             </div>
-            <button className="play-button" onClick={() => playTrack(track)}>
+            <button className="play-button" onClick={() => playTrack(index)}>
               Ouvir
             </button>
           </li>
         ))}
       </ul>
-
-      {currentTrack && (
-        <div className="player-bar">
-          <p>{currentTrack.title} - Prévia</p>
-          <audio ref={audioRef} controls>
-            <source src={currentTrack.preview} type="audio/mpeg" />
-            Seu navegador não suporta áudio.
-          </audio>
-        </div>
-      )}
     </div>
   );
 }

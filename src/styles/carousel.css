@@ -103,3 +103,22 @@
 .swiper-button-prev::after {
   font-size: 20px;
 }
+
+@media (max-width: 600px) {
+  .carousel-container .swiper-button-next,
+  .carousel-container .swiper-button-prev {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .play button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .music-name {
+    font-size: 12px;
+  }
+}
+

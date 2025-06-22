@@ -231,3 +231,77 @@
   line-height: 1.5;
 }
 
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-height: 80vh;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+  }
+
+  .music-name {
+    font-size: 14px;
+  }
+
+  .music-categorie {
+    font-size: 12px;
+  }
+
+  .modal-content {
+    padding: 1rem;
+    width: 95%;
+  }
+
+  .info-musica-modal img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .info-musica-modal h3 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .music-name {
+    font-size: 12px;
+  }
+
+  .music-categorie {
+    font-size: 10px;
+  }
+
+  .card-text {
+    padding: 8px;
+  }
+
+  .play button {
+    padding: 8px;
+  }
+
+  .fechar-btn {
+    top: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+  }
+}
+
+

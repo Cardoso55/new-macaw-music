@@ -54,11 +54,21 @@
 .header__login .login{
     width: 100px;
     height: 48px;
-    color: #a7a7a7;
+    color: #000000;
     font-size: 16px;
     font-weight: 700;
     border-radius: 40px;
     border: none;
+}
+.header__login .login:hover{
+    width: 100px;
+    height: 48px;
+    color: #0e76d8;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
 }
 
 .header__login {
@@ -90,3 +100,97 @@
   background-color: white;
   color: #0e67ce;
 }
+
+@media (max-width: 1024px) {
+  .header {
+    margin-left: 230px;
+    margin-right: 20px;
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    margin-left: 10px;
+    margin-right: 10px;
+    max-width: 95vw;
+  }
+
+  .header__navigation {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .header__navigation .navigation {
+    display: none;
+  }
+
+  .header__login {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .header__login .login,
+  .header__login .logout,
+  .header__login .username {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Esconder menu toggle (☰) no desktop */
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Dropdown mobile inicial escondido por padrão */
+.mobile-dropdown {
+  display: none;
+}
+
+/* Mobile: esconder os botões padrão e mostrar o menu ☰ */
+@media (max-width: 768px) {
+  .header__login {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .mobile-dropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 16px;
+    top: 60px;
+    background-color: #121212;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+    gap: 10px;
+    z-index: 999;
+  }
+
+  .mobile-dropdown button {
+    background-color: #1f1f1f;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .mobile-dropdown button:hover {
+    background-color: #333;
+  }
+}
+

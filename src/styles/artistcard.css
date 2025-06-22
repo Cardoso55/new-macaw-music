@@ -49,3 +49,20 @@
   color: #fff;
   cursor: pointer;
 }
+
+@media (max-width: 600px) {
+  .artist-list {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .artist-card img {
+    height: 100px;
+  }
+
+  .btn-navegarParaArtista {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+}

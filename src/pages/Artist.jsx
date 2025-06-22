@@ -3,11 +3,15 @@ import '../styles/artist.css';
 
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Artist({ setPlaylist, setCurrentIndex, setIsPlaying , tocarPreview , buscarLetra }) {
   const { state } = useLocation();
   const { artista } = state || {};
   const [topMusicas, setTopMusicas] = useState([]);
+  const navigate = useNavigate();
+  const voltarParaHome = ()=>{navigate('/')};
+  
 
   useEffect(() => {
     console.log('🎯 Artista recebido via state:', artista);
@@ -25,14 +29,17 @@ function Artist({ setPlaylist, setCurrentIndex, setIsPlaying , tocarPreview , bu
     console.error('❌ Erro ao buscar top 10 do artista:', error);
   }
 };
-
+  
 
     buscarTop10DoArtista(artista.id);
   }, [artista]);
 
   return (
+
     <div className="artist-page">
+      <button className="back-button" onClick={voltarParaHome}> ⬅ </button>
       <div className="artist-header">
+    
         <img src={artista.picture_xl} alt={artista.name} />
         <h1>{artista.name}</h1>
       </div>

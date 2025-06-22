@@ -63,3 +63,89 @@
     border-radius: 40px;
     border: none;
 }
+
+@media (max-width: 1024px) {
+  .header-playlist {
+    margin-left: 230px;
+    margin-right: 20px;
+  }
+
+  .header__navigation {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .header__login {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-playlist {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .header__navigation {
+    padding: 8px;
+    margin: 5px;
+  }
+
+  .arrow-left, .arrow-right {
+    width: 28px;
+    height: 28px;
+  }
+
+  .header__login .subscribe,
+  .header__login .login {
+    font-size: 14px;
+  }
+
+  .header__login .login {
+    width: 80px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header__navigation {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .header__navigation .navigation {
+    display: none;
+  }
+  .header__navigation .navigation {
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .arrow-left, .arrow-right {
+    width: 24px;
+    height: 24px;
+  }
+
+  .header__login {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .header__login .subscribe,
+  .header__login .login {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    overflow-x: hidden;
+  }
+}
+

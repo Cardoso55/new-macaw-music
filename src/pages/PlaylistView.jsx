@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import '../styles/playlistview.css';
 import Player from '../components/PlayerPlaylist';
 
-function PlaylistView() {
+function PlaylistView({buscarLetra}) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [playlist, setPlaylist] = useState(null);
@@ -100,7 +100,7 @@ function PlaylistView() {
 
                   <div className="buttons">
                     <button onClick={() => tocarMusicaNoPlayer(index)}>▶</button>
-                    <button onClick={() => verLetra(musica)}>Ver Letra</button>
+                    <button onClick={() => buscarLetra(musica.artista, musica.titulo, musica.capa)}>Ver Letra</button>
                     <button onClick={() => removerMusica(index)}>X</button>
                   </div>
                 </div>

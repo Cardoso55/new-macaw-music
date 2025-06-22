@@ -1,18 +1,16 @@
-// Barra superior com logo, menu, busca, entrar, increva-se e etc.
 import setaE from '../assets/icons/small-left.png';
 import setaD from '../assets/icons/small-right.png';
 import { useNavigate } from 'react-router';
-
 import Searchbar from '../components/Searchbar';
 import '../styles/reset.css';
-import '../styles/headerPlaylists.css'
+import '../styles/header.css';
+import { useState } from "react";
 
 
-function HeaderPlaylists({query , setQuery , buscarMusica}) {
-   const navigate = useNavigate();
-   
-
+function Header({query , setQuery , buscarMusica, buscarArtista}) {
+    const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('macawUser'));
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const irParaLogin = () => {
     navigate('/login');
@@ -36,8 +34,12 @@ function HeaderPlaylists({query , setQuery , buscarMusica}) {
     window.location.reload();  // Pra forçar o header recarregar (opcional, mas garante)
   };
 
+  const irParaPlaylists = () => {
+    navigate('/playlists')
+  }
+
   return (
-    <div className="header-playlist">
+    <div className="header">
       <nav className="header__navigation">
         <div className="navigation">
           <button className="arrow-left" onClick={voltar}>
@@ -48,8 +50,14 @@ function HeaderPlaylists({query , setQuery , buscarMusica}) {
           </button>
         </div>
 
-        <Searchbar query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
+        <Searchbar
+          query={query}
+          setQuery={setQuery}
+          buscarMusica={buscarMusica}
+          buscarArtista={buscarArtista}
+        />
 
+        {/* Bloco de botões de login no Desktop */}
         <div className="header__login">
           {user ? (
             <>
@@ -63,9 +71,34 @@ function HeaderPlaylists({query , setQuery , buscarMusica}) {
             </>
           )}
         </div>
+
+        {/* Menu Hamburguer (Mobile) */}
+        <button className="menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          ☰
+        </button>
       </nav>
+
+      {/* Dropdown Mobile */}
+      {isMobileMenuOpen && (
+        <div className="mobile-dropdown">
+          {user ? (
+            <>
+              <span className="username">Olá, {user.username}</span>
+              <button onClick={irParaPlaylists}>Minhas Playlists</button>
+              <button onClick={handleLogout} className="logout">Sair</button>
+              <span className="fas fa-home"onClick={navigate('/')}></span>
+            </>
+          ) : (
+            <>
+              <button onClick={irParaRegister}>Inscreva-se</button>
+              <button onClick={irParaLogin}>Entrar</button>
+              <span className="fas fa-home "onClick={navigate('/')}></span>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
-export default HeaderPlaylists;
+export default Header;
