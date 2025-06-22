@@ -1,10 +1,8 @@
 import { useState , useRef, useEffect} from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router';
-import Searchbar from './components/Searchbar';
-import MusicCard from './components/MusicCard';
+import React from 'react';
 import Main  from './components/Main';
 import Header from './components/Header';
-import Home from './pages/Home';
 import Search from './pages/Search';
 import Artist from './pages/Artist';
 import Album from './pages/Album';
@@ -16,14 +14,21 @@ import Sidebar from './components/Sidebar';
 import Register from './pages/Register';
 import Player from './components/Player';
 import CriarPlaylist from './pages/CriarPlaylist';
+import ArtistCard from './components/ArtistCard';
 
 
 function App() {
   const [query, setQuery] = useState('');
   const [resultados, setResultados] = useState([]);
+  const [artistas, setArtistas] = useState([]);
   const [playlist, setPlaylist] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [letra, setLetra] = useState('');
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [infoMusica, setInfoMusica] = useState({});
+  const [topMusicas, setTopMusicas] = useState([]);
+  const [artistaSelecionado, setArtistaSelecionado] = useState(null);
   const generosComIds = [
     { nome: 'Rock', id: 152 },
     { nome: 'Pop', id: 132 },
@@ -37,69 +42,60 @@ function App() {
     { nome: 'Samba e Pagóde', id: 79},
     { nome: 'Metal', id: 464},
   ];
-  const [aleatorias, setAleatorias] = useState([]);
   const [musicasPorGenero, setMusicasPorGenero] = useState({});
   const audioRef = useRef(null);
 
   useEffect(() => {
-    buscarAleatorias();
     buscarGeneros();
   }, []);
 
-  const buscarMusica = (q) => {
+  const buscarMusica = async (q) => {
     if (!q) {
       setResultados([]);
       setPlaylist([]);
       return;
     }
 
-    const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
-    const script = document.createElement('script');
+    const url = `https://deezerdevs-deezer.p.rapidapi.com/search?q=${encodeURIComponent(q)}`;
 
-    window[callback] = (data) => {
-      delete window[callback];
-      if (document.body.contains(script)) {
-        document.body.removeChild(script); // <-- EVITA ERRO
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': 'a534008d60mshec9500de3c5977bp1e540cjsn7cfd3cdff862',
+        'X-RapidAPI-Host': 'deezerdevs-deezer.p.rapidapi.com'
       }
-      setResultados(Array.isArray(data.data) ? data.data : []);
     };
-
-    script.src = `https://api.deezer.com/search/track?q=${encodeURIComponent(q)}&output=jsonp&callback=${callback}`;
-    script.onerror = () => console.error('Erro ao carregar JSONP');
-    document.body.appendChild(script);
+    try {
+      const res = await fetch(url, options);
+      const data = await res.json();
+      setResultados(Array.isArray(data.data) ? data.data : []);
+    } catch (error) {
+      console.error('Erro ao buscar música:', error);
+    }
   };
 
-  const buscarAleatorias = () => {
-  const generoAleatorio = generosComIds[Math.floor(Math.random() * generosComIds.length)];
+  const buscarArtista = async (q) => {
+  if (!q) {
+    setArtistas([]);
+    return;
+  }
 
-  const callback = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
-  const script = document.createElement('script');
+  try {
+    const res = await fetch(`http://localhost:5000/deezer/search/artist?q=${encodeURIComponent(q)}`);
 
-  window[callback] = (data) => {
-    const artistas = data.data || [];
+    const data = await res.json();
 
-    // Pega os top 1 ou 2 artistas só pra evitar excesso de requisição
-    artistas.slice(0, 2).forEach((artista) => {
-      const callbackArtista = 'jsonp_callback_' + Math.floor(Math.random() * 100000);
-      const scriptArtista = document.createElement('script');
-
-      window[callbackArtista] = (dataMusicas) => {
-        const musicas = dataMusicas.data || [];
-        setAleatorias((prev) => [...prev, ...musicas]);
-        delete window[callbackArtista];
-        document.body.removeChild(scriptArtista);
-      };
-
-      scriptArtista.src = `https://api.deezer.com/artist/${artista.id}/top?limit=3&output=jsonp&callback=${callbackArtista}`;
-      document.body.appendChild(scriptArtista);
-    });
-
-    delete window[callback];
-    document.body.removeChild(script);
-  };
-
-  script.src = `https://api.deezer.com/genre/${generoAleatorio.id}/artists?output=jsonp&callback=${callback}`;
-  document.body.appendChild(script);
+    if (Array.isArray(data.data)) {
+      console.log('✅ Artistas encontrados via proxy:', data.data);
+      setArtistas(data.data);
+    } else {
+      console.warn('⚠️ Nenhum artista encontrado');
+      setArtistas([]);
+    }
+  } catch (error) {
+    console.error('❌ Erro ao buscar artista via proxy:', error);
+    setArtistas([]);
+  }
 };
 
   const buscarGeneros = () => {
@@ -145,41 +141,58 @@ function App() {
     script.src = `https://api.deezer.com/genre/${genreId}/artists?output=jsonp&callback=${callback}`;
     document.body.appendChild(script);
   };
-
-
   
   const tocarPreview = (url, index, novaPlaylist) => {
-         if (!url) {
-          alert('Essa música não tem preview disponível.');
-        return;
-        }
+  if (!url) {
+    alert('Essa música não tem preview disponível.');
+    return;
+  }
 
-        console.log('Tocando preview:', url);
-        if(audioRef.current){
-          const player = audioRef.current;
-          if (player.src === url) {
-              if (player.paused) player.play();
-          } else {
-              player.src = url;
-              player.play();
-          }
-        }
-        setPlaylist(novaPlaylist);
-        setCurrentIndex(index);
-        setIsPlaying(true);
-    };
+  const player = audioRef.current;
+
+  if (player) {
+    // ✅ evita tocar a mesma música duas vezes
+    if (player.src === url && !player.paused) {
+      console.log('🎵 Música já está tocando.');
+      return;
+    }
+
+    player.src = url;
+    player.play();
+  }
+
+  setPlaylist(novaPlaylist);
+  setCurrentIndex(index);
+  setIsPlaying(true);
+};
   
-  const buscarLetra = async (artista, musica) => {
-        try {
-        const res = await fetch(`http://localhost:3001/genius?q=${encodeURIComponent(`${musica} ${artista}`)}`);
-        const data = await res.json();
-        const path = data.response?.hits[0]?.result?.path;
-        if (path) window.open(`https://genius.com${path}`, '_blank');
-        else alert('Letra não encontrada.');
-        } catch (e) {
-        console.error('Erro ao buscar letra:', e);
-        }
-    };
+  const buscarLetra = async (artista, musica, capa) => {
+  const url = `http://localhost:5000/lyrics?artist=${encodeURIComponent(artista)}&title=${encodeURIComponent(musica)}`;
+
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.lyrics) {
+      console.log('Letra da música:', data.lyrics);
+      const letraComEstrofesSeparadas = data.lyrics.replace(/([^\n])\n(?=[^\n])/g, '$1\n');
+      setLetra(letraComEstrofesSeparadas);
+      setInfoMusica({artista, musica, capa});
+      setMostrarModal(true);
+    } else {
+      console.warn('Letra não encontrada.');
+    }
+  } catch (error) {
+    console.error('Erro ao buscar letra:', error.message);
+  }
+};
+
 
   return (
     <div>
@@ -187,27 +200,31 @@ function App() {
           <Route path='/' element={
             <>
               <Sidebar/> 
-              <Header query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
+              <Header query={query} setQuery={setQuery} buscarMusica={buscarMusica} buscarArtista={buscarArtista} />
               <Main 
                 resultados={resultados} 
-                aleatorias={aleatorias} 
+                artistas={artistas}
                 musicasPorGenero={musicasPorGenero} 
                 tocarPreview={tocarPreview}  
                 buscarLetra={buscarLetra}
                 setPlaylist={setPlaylist}
                 setCurrentIndex={setCurrentIndex}
                 setIsPlaying={setIsPlaying}
-              />
-              <Player 
-                playlist={playlist} 
-                currentIndex={currentIndex} 
-                setCurrentIndex={setCurrentIndex} 
-                isPlaying={isPlaying} 
-                setIsPlaying={setIsPlaying}
+                artista={artistaSelecionado}
+                topMusicas={topMusicas}
               />
             </>
           }/>
-          <Route path="/artist/:id" element={<Artist />} />
+          <Route path="/artist/:id" element={ 
+          <Artist
+            setPlaylist={setPlaylist}
+            setCurrentIndex={setCurrentIndex}
+            setIsPlaying={setIsPlaying}
+            tocarPreview={tocarPreview}
+            buscarLetra={buscarLetra}
+          />
+          
+          } />
           <Route path="/album/:id" element={<Album />} />
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlist/:id" element={<PlaylistView />} />
@@ -217,7 +234,46 @@ function App() {
           <Route path="/criar-playlist" element={<CriarPlaylist/>} />
           <Route path="/search" element={<Search />} />
         </Routes>
+        <Player 
+          playlist={playlist} 
+          currentIndex={currentIndex} 
+          setCurrentIndex={setCurrentIndex} 
+          isPlaying={isPlaying} 
+          setIsPlaying={setIsPlaying}
+          audioRef={audioRef}
+        />
         <audio ref={audioRef} />
+
+        {mostrarModal && (
+          <div className="modal-overlay" onClick={() => setMostrarModal(false)}>
+            {console.log('infoMusica ->', infoMusica)}
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <button className="fechar-btn" onClick={() => setMostrarModal(false)}>X</button>
+
+              <div className="info-musica-modal">
+                <img src={infoMusica.capa} alt="Capa do álbum" />
+                <div>
+                  <h3>{infoMusica.musica}</h3>
+                  <p>{infoMusica.artista}</p>
+                </div>
+              </div>
+
+              <div className="letra">
+                {letra.split('\n\n').map((estrofe, index) => (
+                  <p key={index}>
+                    {estrofe.split('\n').map((linha, i) => (
+                      <React.Fragment key={i}>
+                        {linha}
+                        <br />
+                      </React.Fragment>
+                    ))}
+                  </p>
+                ))}
+            </div>
+            </div>
+          </div>
+        )}
+
     </div>
   );
 

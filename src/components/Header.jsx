@@ -8,7 +8,7 @@ import '../styles/reset.css';
 import '../styles/header.css';
 
 
-function Header({query , setQuery , buscarMusica}) {
+function Header({query , setQuery , buscarMusica, buscarArtista}) {
     const navigate = useNavigate;
 
     const irParaLogin = () => {
@@ -26,7 +26,7 @@ function Header({query , setQuery , buscarMusica}) {
                         <img src={setaD} alt="Seta direita" />
                     </button>
                 </div>
-                <Searchbar query={query} setQuery={setQuery} buscarMusica={buscarMusica} />
+                <Searchbar query={query} setQuery={setQuery} buscarMusica={buscarMusica} buscarArtista={buscarArtista} />
                 <div className="header__login">
                     <button className="subscribe">Inscreva-se</button>
                     <button onClick={irParaLogin} className="login">Entrar</button>

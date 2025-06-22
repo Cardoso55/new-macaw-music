@@ -3,7 +3,7 @@ import './Searchbar';
 import '../styles/musiccard.css';
 
 
-function MusicCard({resultados = [] , tocarPreview , buscarLetra , setIsPlaying, setPlaylist, setCurrentIndex}) {
+function MusicCard({resultados = [] , buscarLetra , setIsPlaying, setPlaylist, setCurrentIndex}) {
     const [mostrarDropdown, setMostrarDropdown] = useState(null); // controla o dropdown por música
     const [playlists, setPlaylists] = useState([]);
 
@@ -52,17 +52,26 @@ function MusicCard({resultados = [] , tocarPreview , buscarLetra , setIsPlaying,
                         <span className="music-categorie">
                             {track.artist.name} - {track.album.title}
                         </span>
+                    
+                        <div className="botoes">
 
-                        <button onClick={() => buscarLetra(track.artist.name, track.title)} className="btn-letra">
-                            Ver Letra
-                        </button>
+                            <button
+                                onClick={() =>
+                                    buscarLetra(track.artist.name, track.title, track.album.cover_medium)
+                                }
+                                className="btn-letra"
+                                >
+                                Letra
+                            </button>
 
-                        <button
-                            onClick={() => setMostrarDropdown(mostrarDropdown === i ? null : i)}
-                            className="btn-letra"
-                        >
-                            Adicionar à Playlist
-                        </button>
+                            
+                            <button
+                                onClick={() => setMostrarDropdown(mostrarDropdown === i ? null : i)}
+                                className="btn-letra"
+                            >
+                                Adicionar à Playlist
+                            </button>
+                        </div>
 
                         {mostrarDropdown === i && (
                             <ul className="dropdown-playlists">

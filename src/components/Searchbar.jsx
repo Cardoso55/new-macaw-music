@@ -7,7 +7,7 @@ import '../styles/reset.css';
 import '../styles/searchbar.css';
 
 
-function Searchbar ({query, setQuery, buscarMusica}){
+function Searchbar ({query, setQuery, buscarMusica, buscarArtista}){
     console.log('query:', query);
     console.log('setQuery:', setQuery); // ← isso aqui deve ser uma função
     console.log('buscarMusica:', buscarMusica);
@@ -24,6 +24,7 @@ function Searchbar ({query, setQuery, buscarMusica}){
                 const val = e.target.value;
                 setQuery(val);
                 buscarMusica(val);
+                buscarArtista(val);
                 }}
             />
         </div>

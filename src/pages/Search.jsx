@@ -6,9 +6,10 @@
 // Álbuns
 // Pode ter tabs ou filtros por tipo de resultado
 
+import ArtistCard from "../components/ArtistCard";
 import MusicCard from "../components/MusicCard";
 
-function Search({resultados = [] , tocarPreview , buscarLetra , setIsPlaying ,setCurrentIndex, setPlaylist}) {
+function Search({resultados = [] , tocarPreview , buscarLetra , setIsPlaying ,setCurrentIndex, setPlaylist, artistas = [] , topMusicas}) {
     return (
         <div>
             <MusicCard 
@@ -18,6 +19,10 @@ function Search({resultados = [] , tocarPreview , buscarLetra , setIsPlaying ,se
                 setIsPlaying={setIsPlaying} 
                 setCurrentIndex={setCurrentIndex} 
                 setPlaylist={setPlaylist}
+            />
+            <ArtistCard
+                artistas={artistas}
+                topMusicas={topMusicas}
             />
         </div>
     )

@@ -4,11 +4,11 @@ import Carousel from './Carousel';
 import Search from '../pages/Search';
 import '../styles/main.css';
 
-function Main ({ resultados = [] , aleatorias , musicasPorGenero , tocarPreview , buscarLetra, setPlaylist, setCurrentIndex, setIsPlaying}) {
+function Main ({ resultados = [] , musicasPorGenero , tocarPreview , buscarLetra, setPlaylist, setCurrentIndex, setIsPlaying, artistas = [] , topMusicas}) {
     return (
         <div className="conteiner">
             <div className="playlist-container">
-                {resultados?.length === 0 ? (
+                {resultados?.length === 0 && artistas?.length === 0 ? (
                 <>
                     {Object.entries(musicasPorGenero).map(([genero, musicas]) => (
                         <section key={genero}>
@@ -35,6 +35,8 @@ function Main ({ resultados = [] , aleatorias , musicasPorGenero , tocarPreview 
                         setPlaylist={setPlaylist}
                         setCurrentIndex={setCurrentIndex}
                         setIsPlaying={setIsPlaying}
+                        artistas={artistas}
+                        topMusicas={topMusicas}
                     />
                 )}
             </div>

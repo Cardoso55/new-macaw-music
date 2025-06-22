@@ -104,13 +104,21 @@
   cursor: pointer;
 }
 
+.botoes{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-top: 1px solid #a7a7a7 ;
+  width: 90%;
+  margin: 10px auto;
+
+}
 
 .btn-letra {
   margin-top: 12px;
-  padding: 8px 12px;
   border: none;
-  background-color: #d6d6d6;
-  color: #121212;
+  background-color: transparent;
+  color: #a7a7a7;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
@@ -118,7 +126,9 @@
 }
 
 .btn-letra:hover {
-  background-color: #aaaaaa;
+  text-decoration: underline;
+  color: white;
+  cursor: pointer;
 }
 
 .dropdown-playlists {
@@ -129,7 +139,6 @@
   padding: 0.5rem;
   position: relative;
   z-index: 10;
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -154,3 +163,71 @@
 .dropdown-playlists button:hover {
   background-color: #3a3a3a;
 }
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #181818;
+  color: #a7a7a7;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.fechar-btn {
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  background: #ff3e3e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.info-musica-modal {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 15px;
+}
+
+.info-musica-modal img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.info-musica-modal h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.info-musica-modal p {
+  margin: 0;
+  color: #555;
+}
+
+.letra p {
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
