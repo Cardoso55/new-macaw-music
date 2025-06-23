@@ -173,31 +173,23 @@ function App() {
 };
   
   const buscarLetra = async (artista, musica, capa) => {
-  const url = `https://backend-macaw.onrender.com/lyrics?artist=${encodeURIComponent(artista)}&title=${encodeURIComponent(musica)}`;
-
+  const url = `https://api.lyrics.ovh/v1/${encodeURIComponent(artista)}/${encodeURIComponent(musica)}`;
 
   try {
     const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`Erro HTTP: ${response.status}`);
-    }
+    if (!response.ok) throw new Error('Letra não encontrada');
 
     const data = await response.json();
-
     if (data.lyrics) {
-      console.log('Letra da música:', data.lyrics);
-      const letraComEstrofesSeparadas = data.lyrics.replace(/([^\n])\n(?=[^\n])/g, '$1\n');
-      setLetra(letraComEstrofesSeparadas);
-      setInfoMusica({artista, musica, capa});
+      setLetra(data.lyrics.replace(/([^\n])\n(?=[^\n])/g, '$1\n'));
+      setInfoMusica({ artista, musica, capa });
       setMostrarModal(true);
-    } else {
-      console.warn('Letra não encontrada.');
     }
-  } catch (error) {
-    console.error('Erro ao buscar letra:', error.message);
+  } catch (err) {
+    console.error('Erro buscando letra:', err.message);
   }
 };
+
 
 
   return (
