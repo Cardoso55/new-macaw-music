@@ -20,7 +20,7 @@ function Artist({ setPlaylist, setCurrentIndex, setIsPlaying , tocarPreview , bu
 
     const buscarTop10DoArtista = async (idArtista) => {
   try {
-    const res = await fetch(`http://localhost:5000/deezer/artist/${idArtista}/top?limit=10`);
+    const res = await fetch(`https://backend-macaw.onrender.com/deezer/artist/${idArtista}/top?limit=10`);
     const data = await res.json();
 
     console.log('🎯 Top 10 músicas do artista:', data.data);
